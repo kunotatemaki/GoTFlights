@@ -2,16 +2,11 @@ package com.rookia.gotflights.di.modules
 
 import android.content.Context
 import com.rookia.gotflights.GoTFlightsApplication
-import com.rookia.gotflights.usecases.AddProductToBasketUseCase
-import com.rookia.gotflights.usecases.ClearBasketUseCase
-import com.rookia.gotflights.usecases.GetFlightsUseCase
-import com.rookia.gotflights.usecases.RemoveProductFromBasketUseCase
-import com.rookia.gotflights.framework.persistence.databases.AppDatabase
 import com.rookia.gotflights.data.repository.Repository
-import com.rookia.gotflights.data.resources.ResourcesManager
 import com.rookia.gotflights.domain.model.FlightsCache
-import com.rookia.gotflights.ui.checkout.CheckoutViewModel
+import com.rookia.gotflights.framework.persistence.databases.AppDatabase
 import com.rookia.gotflights.ui.main.FlightsViewModel
+import com.rookia.gotflights.usecases.GetFlightsUseCase
 import com.rookia.gotflights.utils.RateLimiter
 import dagger.Module
 import dagger.Provides
@@ -25,7 +20,8 @@ class ProvidesModule {
     fun providesRateLimiter(): RateLimiter = RateLimiter()
 
     @Provides
-    fun providesContext(application: GoTFlightsApplication): Context = application.applicationContext
+    fun providesContext(application: GoTFlightsApplication): Context =
+        application.applicationContext
 
     @Singleton
     @Provides
@@ -35,41 +31,16 @@ class ProvidesModule {
 
     @Provides
     fun provideMainViewModel(
-        getFlightsUseCase: GetFlightsUseCase,
-        addProductToBasketUseCase: AddProductToBasketUseCase,
-        removeProductFromBasketUseCase: RemoveProductFromBasketUseCase,
-        clearBasketUseCase: ClearBasketUseCase
+        getFlightsUseCase: GetFlightsUseCase
     ): FlightsViewModel = FlightsViewModel(
-        getFlightsUseCase,
-        addProductToBasketUseCase,
-        removeProductFromBasketUseCase,
-        clearBasketUseCase
+        getFlightsUseCase
     )
 
     @Provides
-    fun provideCheckoutViewModel(
-        getFlightsUseCase: GetFlightsUseCase,
-        clearBasketUseCase: ClearBasketUseCase,
-        resourcesManager: ResourcesManager
-    ): CheckoutViewModel = CheckoutViewModel(getFlightsUseCase, clearBasketUseCase, resourcesManager)
-
-    @Provides
     @Singleton
-    fun providesGetProductsUseCase(repository: Repository): GetFlightsUseCase = GetFlightsUseCase(repository)
+    fun providesGetProductsUseCase(repository: Repository): GetFlightsUseCase =
+        GetFlightsUseCase(repository)
 
-    @Provides
-    @Singleton
-    fun providesAddProductsToBasketUseCase(repository: Repository): AddProductToBasketUseCase =
-        AddProductToBasketUseCase(repository)
-
-    @Provides
-    @Singleton
-    fun providesRemoveProductsFromBasketUseCase(repository: Repository): RemoveProductFromBasketUseCase =
-        RemoveProductFromBasketUseCase(repository)
-
-    @Provides
-    @Singleton
-    fun providesClearBasketUseCase(repository: Repository): ClearBasketUseCase = ClearBasketUseCase(repository)
 
     @Provides
     @Singleton

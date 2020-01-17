@@ -2,29 +2,25 @@ package testclasses
 
 import android.content.Context
 import com.rookia.gotflights.GoTFlightsApplication
-import com.rookia.gotflights.usecases.AddProductToBasketUseCase
-import com.rookia.gotflights.usecases.ClearBasketUseCase
-import com.rookia.gotflights.usecases.GetFlightsUseCase
-import com.rookia.gotflights.usecases.RemoveProductFromBasketUseCase
-import com.rookia.gotflights.framework.utils.security.EncryptionImpl
-import com.rookia.gotflights.framework.utils.view.ViewUtilsImpl
 import com.rookia.gotflights.data.network.NetworkServiceFactory
-import com.rookia.gotflights.framework.network.NetworkServiceFactoryImpl
 import com.rookia.gotflights.data.persistence.PersistenceManager
-import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
-import com.rookia.gotflights.framework.persistence.databases.AppDatabase
 import com.rookia.gotflights.data.preferences.PreferencesManager
-import com.rookia.gotflights.framework.preferences.PreferencesManagerImpl
 import com.rookia.gotflights.data.repository.Repository
-import com.rookia.gotflights.framework.repository.RepositoryImpl
 import com.rookia.gotflights.data.resources.ResourcesManager
 import com.rookia.gotflights.domain.model.FlightsCache
+import com.rookia.gotflights.framework.network.NetworkServiceFactoryImpl
+import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
+import com.rookia.gotflights.framework.persistence.databases.AppDatabase
+import com.rookia.gotflights.framework.preferences.PreferencesManagerImpl
+import com.rookia.gotflights.framework.repository.RepositoryImpl
 import com.rookia.gotflights.framework.resources.ResourcesManagerImpl
-import com.rookia.gotflights.utils.security.Encryption
-import com.rookia.gotflights.ui.checkout.CheckoutViewModel
+import com.rookia.gotflights.framework.utils.security.EncryptionImpl
+import com.rookia.gotflights.framework.utils.view.ViewUtilsImpl
 import com.rookia.gotflights.ui.main.FlightsViewModel
+import com.rookia.gotflights.usecases.GetFlightsUseCase
 import com.rookia.gotflights.utils.RateLimiter
 import com.rookia.gotflights.utils.ViewUtils
+import com.rookia.gotflights.utils.security.Encryption
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -41,25 +37,11 @@ open class AppModuleForTest {
 
     @Provides
     open fun providesMainViewModel(
-        getFlightsUseCase: GetFlightsUseCase,
-        addProductToBasketUseCase: AddProductToBasketUseCase,
-        removeProductFromBasketUseCase: RemoveProductFromBasketUseCase,
-        clearBasketUseCase: ClearBasketUseCase
+        getFlightsUseCase: GetFlightsUseCase
     ): FlightsViewModel =
         FlightsViewModel(
-            getFlightsUseCase,
-            addProductToBasketUseCase,
-            removeProductFromBasketUseCase,
-            clearBasketUseCase
+            getFlightsUseCase
         )
-
-    @Provides
-    open fun providesCheckoutViewModel(
-        getFlightsUseCase: GetFlightsUseCase,
-        clearBasketUseCase: ClearBasketUseCase,
-        resourcesManager: ResourcesManager
-    ): CheckoutViewModel =
-        CheckoutViewModel(getFlightsUseCase, clearBasketUseCase, resourcesManager)
 
     @Singleton
     @Provides
@@ -106,21 +88,6 @@ open class AppModuleForTest {
     @Singleton
     open fun providesGetProductsUseCase(repository: Repository): GetFlightsUseCase =
         GetFlightsUseCase(repository)
-
-    @Provides
-    @Singleton
-    open fun providesAddProductsToBasketUseCase(repository: Repository): AddProductToBasketUseCase =
-        AddProductToBasketUseCase(repository)
-
-    @Provides
-    @Singleton
-    open fun providesRemoveProductsFromBasketUseCase(repository: Repository): RemoveProductFromBasketUseCase =
-        RemoveProductFromBasketUseCase(repository)
-
-    @Provides
-    @Singleton
-    open fun providesClearBasketUseCase(repository: Repository): ClearBasketUseCase =
-        ClearBasketUseCase(repository)
 
     @Provides
     @Singleton

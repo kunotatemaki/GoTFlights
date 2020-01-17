@@ -2,12 +2,8 @@ package com.rookia.gotflights.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jraska.livedata.test
-import com.rookia.gotflights.usecases.AddProductToBasketUseCase
-import com.rookia.gotflights.usecases.ClearBasketUseCase
 import com.rookia.gotflights.usecases.GetFlightsUseCase
-import com.rookia.gotflights.usecases.RemoveProductFromBasketUseCase
 import io.mockk.MockKAnnotations
-import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
@@ -30,15 +26,6 @@ class FlightsViewModelTest {
     @MockK
     private lateinit var getFlightsUseCase: GetFlightsUseCase
 
-    @MockK
-    private lateinit var addProductToBasketUseCase: AddProductToBasketUseCase
-
-    @MockK
-    private lateinit var removeProductFromBasketUseCase: RemoveProductFromBasketUseCase
-
-    @MockK
-    private lateinit var clearBasketUseCase: ClearBasketUseCase
-
     private lateinit var viewModel: FlightsViewModel
 
     @Before
@@ -46,10 +33,7 @@ class FlightsViewModelTest {
         MockKAnnotations.init(this, relaxed = true)
         Dispatchers.setMain(mainThreadSurrogate)
         viewModel = FlightsViewModel(
-            getFlightsUseCase,
-            addProductToBasketUseCase,
-            removeProductFromBasketUseCase,
-            clearBasketUseCase
+            getFlightsUseCase
         )
     }
 
@@ -72,6 +56,7 @@ class FlightsViewModelTest {
 
         }
     }
+    // TODO: 17/01/2020 tests de aquí
 
 //    @Test
 //    fun addProductToBasket() {

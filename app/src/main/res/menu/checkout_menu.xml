@@ -2,12 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/checkout_item"
+        android:id="@+id/filter_item"
         app:showAsAction="always"
         android:title="@string/checkout"
         android:icon="@drawable/actionbar_cart"/>
-    <item
-        android:id="@+id/delete_basket_item"
-        app:showAsAction="never"
-        android:title="@string/delete_basket"/>
 </menu>

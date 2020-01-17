@@ -8,7 +8,7 @@ import com.rookia.gotflights.domain.network.AppApi.Item
 import com.rookia.gotflights.data.persistence.PersistenceManager
 import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
 import com.rookia.gotflights.framework.persistence.databases.AppDatabase
-import com.rookia.gotflights.framework.persistence.entities.ProductEntity
+import com.rookia.gotflights.framework.persistence.entities.FooEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.*
@@ -27,9 +27,9 @@ class LocalDBTest {
     private lateinit var database: AppDatabase
     private lateinit var persistenceManager: PersistenceManager
 
-    private val dbProduct1 = ProductEntity("code1", "name1", 1.0)
-    private val dbProduct2 = ProductEntity("code2", "name2", 2.0)
-    private val dbProduct3 = ProductEntity("code3", "name3", 3.0)
+    private val dbProduct1 = FooEntity("code1", "name1", 1.0)
+    private val dbProduct2 = FooEntity("code2", "name2", 2.0)
+    private val dbProduct3 = FooEntity("code3", "name3", 3.0)
     private val networkProduct1 =
         Item(code = dbProduct1.code, name = dbProduct1.name, price = dbProduct1.price)
     private val networkProduct2 =

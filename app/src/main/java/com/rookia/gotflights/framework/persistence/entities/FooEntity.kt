@@ -5,11 +5,11 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "product", indices = [(Index(value = arrayOf("code"), unique = true))])
-data class ProductEntity constructor(
+@Entity(tableName = "foo", indices = [(Index(value = arrayOf("id"), unique = true))])
+data class FooEntity constructor(
     @PrimaryKey
-    @ColumnInfo(name = "code")
-    val code: String,
+    @ColumnInfo(name = "id")
+    val id: String,
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "price")

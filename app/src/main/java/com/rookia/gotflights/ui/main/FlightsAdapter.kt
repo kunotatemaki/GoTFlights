@@ -1,7 +1,6 @@
 package com.rookia.gotflights.ui.main
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,17 +8,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.rookia.gotflights.R
+import com.rookia.gotflights.data.resources.ResourcesManager
 import com.rookia.gotflights.databinding.BindingComponent
 import com.rookia.gotflights.databinding.FlightRowBinding
-import com.rookia.gotflights.data.resources.ResourcesManager
 import com.rookia.gotflights.domain.network.Flight
 import com.rookia.gotflights.utils.formatDecimalValue
 
 
 class FlightsAdapter(
     private val bindingComponent: BindingComponent,
-    private val resourcesManager: ResourcesManager,
-    private val productsBasketInteractions: ProductsBasketInteractions
+    private val resourcesManager: ResourcesManager
 ) :
     ListAdapter<Flight, FlightsAdapter.FlightViewHolder>(DIFF_CALLBACK) {
 
@@ -33,7 +31,7 @@ class FlightsAdapter(
                 false,
                 bindingComponent
             )
-        return FlightViewHolder(binding, resourcesManager, productsBasketInteractions)
+        return FlightViewHolder(binding, resourcesManager)
     }
 
     override fun onBindViewHolder(holder: FlightViewHolder, position: Int) {
@@ -44,8 +42,7 @@ class FlightsAdapter(
 
     class FlightViewHolder(
         private val binding: FlightRowBinding,
-        private val resourcesManager: ResourcesManager,
-        private val productsBasketInteractions: ProductsBasketInteractions
+        private val resourcesManager: ResourcesManager
     ) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
