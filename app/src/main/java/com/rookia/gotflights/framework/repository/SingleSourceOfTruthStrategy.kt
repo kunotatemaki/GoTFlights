@@ -46,4 +46,4 @@ fun <T, A> resultLiveData(
 
     }
 
-// TODO: 16/01/2020 test para ver si se llama a persisData
+// TODO: 16/01/2020 test para ver si se llama a persistData

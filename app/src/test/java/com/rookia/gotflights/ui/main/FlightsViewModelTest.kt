@@ -56,33 +56,5 @@ class FlightsViewModelTest {
 
         }
     }
-    // TODO: 17/01/2020 tests de aquí
 
-//    @Test
-//    fun addProductToBasket() {
-//        runBlocking(Dispatchers.IO) {
-//            viewModel.addProductToBasket("code").join()
-//            coVerify(exactly = 1) { addProductToBasketUseCase.addProductToBasket("code") }
-//
-//        }
-//    }
-//
-//    @Test
-//    fun removeProductToBasket() {
-//        runBlocking(Dispatchers.IO) {
-//            viewModel.removeProductToBasket("code").join()
-//            coVerify(exactly = 1) { removeProductFromBasketUseCase.removeProductFromBasket("code") }
-//
-//        }
-//    }
-
-//    @Test
-//    fun clearBasket() {
-//        runBlocking(Dispatchers.IO) {
-//            viewModel.clearBasket().join()
-//            coVerify(exactly = 1) { clearBasketUseCase.clearBasket() }
-//
-//        }
-//
-//    }
 }
