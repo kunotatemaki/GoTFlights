@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="fabDisabled">#9A9798</color>
+    <color name="timesInBasketColor">#0142C5</color>
+    <color name="priceColor">#B3013D</color>
+    <color name="badge_background_color">#F4E136</color>
+    <color name="checkoutButton">#2196F3</color>
+    <color name="cancelButton">#B6003E</color>
+    <color name="separator">#EEEEEE</color>
+</resources>

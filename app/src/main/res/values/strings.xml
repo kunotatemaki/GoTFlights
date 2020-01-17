@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">GotFlights</string>
+    <string name="products_title">Lana Products</string>
+    <string name="discounts_title">Lana Discounts</string>
+    <string name="checkout">Checkout</string>
+    <string name="marketing_discount_description">2-for-1 promotion on Lana Voucher items</string>
+    <string name="cfo_discount_description">3 or more Lana T-Shirt promotion</string>
+    <string name="product_checkout">%d x %s</string>
+    <string name="discount_checkout_empty">No discounts applied</string>
+    <string name="money_saved">You save</string>
+    <string name="money_to_pay">You pay</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_items">Add at least one item to the basket</string>
+    <string name="accept">Accept</string>
+    <string name="thanks">Thanks for shopping in our website!</string>
+    <string name="delete_basket">Clear Basket</string>
+    <string name="warning">Warning</string>
+    <string name="delete_basket_confirmation">Do you want to clear your baske? This operation cannot be undone</string>
+    <plurals name="numberOfItems">
+        <item quantity="one">%d item in the basket</item>
+        <item quantity="other">%d items in the basket</item>
+    </plurals>
+</resources>
