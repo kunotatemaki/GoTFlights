@@ -49,7 +49,7 @@ class FlightsAdapter(
         fun bindTo(flight: Flight?) {
             binding.flight = flight
             binding.resources = resourcesManager
-            binding.price.text = "${formatDecimalValue(flight?.price)}€"
+            binding.price.text = flight?.getConvertedPriceFormatted()
             binding.outboundRow.legDirection.rotationY = 180f
             binding.executePendingBindings()
         }

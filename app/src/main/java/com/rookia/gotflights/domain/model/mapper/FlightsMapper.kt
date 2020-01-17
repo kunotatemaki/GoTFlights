@@ -4,10 +4,9 @@ import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.model.Inbound
 import com.rookia.gotflights.domain.model.Outbound
 import com.rookia.gotflights.domain.network.model.FlightApiResponse
-import com.rookia.gotflights.utils.BaseMapper
 
-object ApiToCacheMapper : BaseMapper<FlightApiResponse, Flight> {
-    override fun map(type: FlightApiResponse): Flight =
+object ApiToCacheMapper {
+    fun map(type: FlightApiResponse, targetCurrencyName: String): Flight =
         Flight(
             currency = type.currency,
             price = type.price,
@@ -30,6 +29,7 @@ object ApiToCacheMapper : BaseMapper<FlightApiResponse, Flight> {
                 departureDate = type.inbound?.departureDate,
                 origin = type.inbound?.origin,
                 destination = type.inbound?.destination
-            )
+            ),
+            targetCurrencyName = targetCurrencyName
         )
 }

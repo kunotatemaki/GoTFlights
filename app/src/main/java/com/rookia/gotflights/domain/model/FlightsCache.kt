@@ -17,8 +17,8 @@ class FlightsCache {
     fun getListOfFlightsInCache() = listOfFlights
 
     @Synchronized
-    fun saveListOfFlightsInCache(list: List<FlightApiResponse>) {
-        listOfFlights.postValue(list.map { ApiToCacheMapper.map(it) })
+    fun saveListOfFlightsInCache(list: List<FlightApiResponse>, targetCurrencyName: String) {
+        listOfFlights.postValue(list.map { ApiToCacheMapper.map(it, targetCurrencyName) })
     }
 
 }

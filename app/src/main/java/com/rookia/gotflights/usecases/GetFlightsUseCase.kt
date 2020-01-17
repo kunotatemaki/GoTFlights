@@ -1,37 +1,46 @@
 package com.rookia.gotflights.usecases
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.switchMap
 import com.rookia.gotflights.data.repository.Repository
 import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.vo.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
 class GetFlightsUseCase constructor(private val repository: Repository) {
 
+    private val targetCurrencyName = "EUR"
+
     fun getFlights(): LiveData<Result<List<Flight>>> =
-        repository.getFlights().switchMap { flights ->
-            val list = flights.data
-            val status = flights.status
-            val message = flights.message
+        repository.getFlights(targetCurrencyName)
 
-            val orderedList = orderByPriceAndRemoveDuplicates(list)
-
-            val result = when (status) {
-                Result.Status.SUCCESS -> Result.success(orderedList)
-                Result.Status.ERROR -> Result.error(message, orderedList)
-                Result.Status.LOADING -> Result.loading(orderedList)
+    suspend fun convertToSameCurrency(list: List<Flight>?): List<Flight> =
+        withContext(Dispatchers.IO) {
+            val listOfCurrencies =
+                list?.filterNot { it.currency == targetCurrencyName }
+                    ?.mapNotNull { it.currency }?.distinct()
+            val mapOfExchangeRates = mutableMapOf<String, BigDecimal?>()
+            listOfCurrencies?.forEach { currency ->
+                val exchangeRate =
+                    repository.getExchangeRate(from = currency, to = targetCurrencyName)
+                if (exchangeRate.status == Result.Status.SUCCESS) {
+                    mapOfExchangeRates[currency] = exchangeRate.data?.exchangeRate
+                }
             }
-            MutableLiveData<Result<List<Flight>>>().also {
-                it.postValue(result)
+            list?.forEach { flight ->
+                if (flight.needToConvert().not()) {
+                    flight.setExchangeRate(1.toBigDecimal())
+                } else {
+                    flight.setExchangeRate(mapOfExchangeRates[flight.currency])
+                }
             }
+            list?.filter { it.isValidPrice() } ?: listOf()
         }
 
-    @VisibleForTesting
     fun orderByPriceAndRemoveDuplicates(list: List<Flight>?): List<Flight> =
         list?.sortedBy {
-            it.price
-        }?.distinctBy {  "${it.inbound?.origin}${it.inbound?.destination}"  } ?: listOf()
+            it.getConvertedPrice()
+        }?.distinctBy { "${it.inbound?.origin}${it.inbound?.destination}" } ?: listOf()
 
 }

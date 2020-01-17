@@ -7,6 +7,7 @@ import com.rookia.gotflights.data.repository.Repository
 import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.model.FlightsCache
 import com.rookia.gotflights.domain.network.model.ApiResponse
+import com.rookia.gotflights.domain.network.model.ExchangeRate
 import com.rookia.gotflights.domain.network.model.FlightApiResponse
 import com.rookia.gotflights.domain.vo.Result
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class RepositoryImpl @Inject constructor(
 ) :
     Repository {
 
-    override fun getFlights(): LiveData<Result<List<Flight>>> =
+    override fun getFlights(targetCurrencyName: String): LiveData<Result<List<Flight>>> =
         resultLiveData(
             persistedDataQuery = {
                 getFlightsFromCache()
@@ -29,7 +30,7 @@ class RepositoryImpl @Inject constructor(
                 getFlightsFromNetwork()
             },
             persistCallResult = {
-                saveToCache(it?.results ?: listOf())
+                saveToCache(it?.results ?: listOf(), targetCurrencyName)
             },
             runNetworkCall = true
         )
@@ -37,9 +38,9 @@ class RepositoryImpl @Inject constructor(
     override fun getFlightsFromCache(): LiveData<List<Flight>> =
         flightsCache.getListOfFlightsInCache()
 
-    override suspend fun getFlightsFromNetwork(): Result<ApiResponse> {
-        return try {
-            val resp = networkServiceFactory.getServiceInstance().getFlights()
+    override suspend fun getFlightsFromNetwork(): Result<ApiResponse> =
+        try {
+            val resp = networkServiceFactory.getFlightsServiceInstance().getFlights()
             if (resp.isSuccessful && resp.body() != null) {
                 Result.success(resp.body())
             } else {
@@ -48,10 +49,23 @@ class RepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.error("error fetching from network")
         }
-    }
 
-    private fun saveToCache(flights: List<FlightApiResponse>) {
-        flightsCache.saveListOfFlightsInCache(flights)
+
+    override suspend fun getExchangeRate(from: String, to: String): Result<ExchangeRate> =
+        try {
+            val resp = networkServiceFactory.getExchangeRatesServiceInstance().getExchangeRate(from, to)
+            if (resp.isSuccessful && resp.body() != null) {
+                Result.success(resp.body())
+            } else {
+                Result.error(resp.message())
+            }
+        } catch (e: Exception) {
+            Result.error("error fetching from network")
+        }
+
+
+    private fun saveToCache(flights: List<FlightApiResponse>, targetCurrencyName: String) {
+        flightsCache.saveListOfFlightsInCache(flights, targetCurrencyName)
     }
 
 }

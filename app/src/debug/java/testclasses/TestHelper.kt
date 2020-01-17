@@ -7,11 +7,12 @@ import com.rookia.gotflights.domain.network.model.FlightApiResponse
 import com.rookia.gotflights.domain.network.model.InboundApiResponse
 import com.rookia.gotflights.domain.network.model.OutboundApiResponse
 import java.math.BigDecimal
+import java.util.*
 
 
-fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
+fun getFlight(origin: String, destination: String, price: BigDecimal, currencyName: String = "EUR"): Flight =
     Flight(
-        currency = "EUR",
+        currency = currencyName,
         inbound = Inbound(
             airline = "airline",
             airlineImage = "image",
@@ -32,7 +33,8 @@ fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
             origin = destination,
             destination = origin
         ),
-        price = price
+        price = price,
+        targetCurrencyName = "EUR"
     )
 
 fun getFlightFromNetwork(origin: String, destination: String, price: BigDecimal): FlightApiResponse =

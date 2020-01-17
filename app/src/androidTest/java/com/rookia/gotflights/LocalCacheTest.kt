@@ -104,7 +104,7 @@ class LocalCacheTest {
     @Throws(InterruptedException::class)
     fun testDataInCache() {
         val flightsToStore = listOf(networkFlight1, networkFlight2, networkFlight3)
-        flightsCache!!.saveListOfFlightsInCache(flightsToStore)
+        flightsCache!!.saveListOfFlightsInCache(flightsToStore, "EUR")
         val flights = flightsCache!!.getListOfFlightsInCache().getItem()
         assertEquals(3, flights.size)
     }
