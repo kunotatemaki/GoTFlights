@@ -1,11 +1,13 @@
 package com.rookia.gotflights
 
 
+import androidx.arch.core.executor.testing.CountingTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.rookia.gotflights.domain.network.GotFlightsApi.Item
 import com.rookia.gotflights.data.persistence.PersistenceManager
+import com.rookia.gotflights.domain.model.FlightsCache
 import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
 import com.rookia.gotflights.framework.persistence.databases.AppDatabase
 import com.rookia.gotflights.framework.persistence.entities.FooEntity
@@ -16,30 +18,31 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import testclasses.getFlightFromNetwork
+import testclasses.getItem
 
 @Suppress("BlockingMethodInNonBlockingContext")
 @RunWith(AndroidJUnit4::class)
-class LocalDBTest {
+class LocalCacheTest {
 
     @get:Rule
-    val instantTaskExecutorRule = IsMainExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
 
     private lateinit var database: AppDatabase
     private lateinit var persistenceManager: PersistenceManager
+    private var flightsCache: FlightsCache? = null
 
-    private val dbProduct1 = FooEntity("code1", "name1", 1.0)
-    private val dbProduct2 = FooEntity("code2", "name2", 2.0)
-    private val dbProduct3 = FooEntity("code3", "name3", 3.0)
-    private val networkProduct1 =
-        Item(code = dbProduct1.code, name = dbProduct1.name, price = dbProduct1.price)
-    private val networkProduct2 =
-        Item(code = dbProduct2.code, name = dbProduct2.name, price = dbProduct2.price)
-    private val networkProduct3 =
-        Item(code = dbProduct3.code, name = dbProduct3.name, price = dbProduct3.price)
+    private val dbFoo1 = FooEntity(1, "name1", 1.0)
+    private val dbFoo2 = FooEntity(2, "name2", 2.0)
+    private val dbFoo3 = FooEntity(3, "name3", 3.0)
+    private val networkFlight1 = getFlightFromNetwork("Valladolid", "Zamora", 1.toBigDecimal())
+    private val networkFlight2 = getFlightFromNetwork("Valencia", "Madrid", 11.toBigDecimal())
+    private val networkFlight3 = getFlightFromNetwork("Barcelona", "Sevilla", 31.toBigDecimal())
 
     @Before
     @Throws(Exception::class)
-    fun initDb() {
+    fun setUp() {
         // using an in-memory database because the information stored here disappears when the
         // process is killed
         database = Room.inMemoryDatabaseBuilder(
@@ -49,31 +52,32 @@ class LocalDBTest {
 
         persistenceManager = PersistenceManagerImpl(database)
 
+        flightsCache = FlightsCache()
+
     }
 
     @After
     @Throws(Exception::class)
-    fun closeDb() {
+    fun close() {
         database.close()
+        flightsCache = null
     }
 
     @Test
     @Throws(InterruptedException::class)
-    fun testProductsTableEmpty() {
-        runBlocking {
-            val products = persistenceManager.getProducts()
-            assertTrue(products.getItem().isEmpty())
-        }
+    fun testFooTableEmpty() {
+        val foo = persistenceManager.getFoo()
+        assertTrue(foo.getItem().isEmpty())
+
     }
 
     @Test
     @Throws(InterruptedException::class)
-    fun testOneProduct() {
+    fun testOneFooItem() {
         runBlocking {
-            persistenceManager.storeProducts(listOf(networkProduct1))
-            val products = persistenceManager.getProducts()
-
-            assertTrue(products.getItem().size == 1)
+            persistenceManager.storeFoo(listOf(dbFoo1))
+            val items = persistenceManager.getFoo().getItem()
+            assertEquals(1, items.size)
         }
     }
 
@@ -81,79 +85,31 @@ class LocalDBTest {
     @Throws(InterruptedException::class)
     fun testMoreThanOneProduct() {
         runBlocking {
-            persistenceManager.storeProducts(
-                listOf(
-                    networkProduct1,
-                    networkProduct2,
-                    networkProduct3
-                )
+            persistenceManager.storeFoo(
+                listOf(dbFoo1, dbFoo2, dbFoo3)
             )
-            val products = persistenceManager.getProducts()
+            val items = persistenceManager.getFoo().getItem()
 
-            assertTrue(products.getItem().size == 3)
+            assertEquals(3, items.size)
         }
     }
 
     @Test
     @Throws(InterruptedException::class)
-    fun testBasketTableEmpty() {
-        runBlocking {
-            val products = persistenceManager.getProductsInBasket()
-            assertTrue(products.getItem().isEmpty())
-        }
+    fun testCacheEmpty() {
+        val flights = flightsCache!!.getListOfFlightsInCache().getItem()
+        assertTrue(flights.isEmpty())
     }
 
     @Test
     @Throws(InterruptedException::class)
-    fun testAddNewProductToBasket() {
-        val code = "code"
-        runBlocking {
-            persistenceManager.addProductToBasket(code)
-            val product = persistenceManager.getProductFromBasket(code)
-            assertNotNull(product)
-            assertEquals(product?.code, code)
-            assertEquals(product?.selections, 1)
-        }
+    fun testDataInCache() {
+        val flightsToStore = listOf(networkFlight1, networkFlight2, networkFlight3)
+        flightsCache!!.saveListOfFlightsInCache(flightsToStore)
+        val flights = flightsCache!!.getListOfFlightsInCache().getItem()
+        assertEquals(3, flights.size)
     }
 
-    @Test
-    @Throws(InterruptedException::class)
-    fun testAddExistingProductToBasket() {
-        val code = "code"
-        runBlocking {
-            persistenceManager.addProductToBasket(code)
-            persistenceManager.addProductToBasket(code)
-            val product = persistenceManager.getProductFromBasket(code)
-            assertNotNull(product)
-            assertEquals(product?.code, code)
-            assertEquals(product?.selections, 2)
-        }
-    }
-
-    @Test
-    @Throws(InterruptedException::class)
-    fun testRemoveExistingProductFromBasket() {
-        val code = "code"
-        runBlocking {
-            persistenceManager.addProductToBasket(code)
-            persistenceManager.removeProductFromBasket(code)
-            val product = persistenceManager.getProductFromBasket(code)
-            assertNotNull(product)
-            assertEquals(product?.code, code)
-            assertEquals(product?.selections, 0)
-        }
-    }
-
-    @Test
-    @Throws(InterruptedException::class)
-    fun testRemoveNonExistingProductFromBasket() {
-        val code = "code"
-        runBlocking {
-            persistenceManager.removeProductFromBasket(code)
-            val product = persistenceManager.getProductFromBasket(code)
-            assertNull(product)
-        }
-    }
 
 
 }

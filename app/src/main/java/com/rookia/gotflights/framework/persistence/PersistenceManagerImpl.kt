@@ -15,5 +15,8 @@ class PersistenceManagerImpl @Inject constructor(
     override fun getFoo(): LiveData<List<FooEntity>> =
         db.fooDao().getFoo()
 
+    override suspend fun storeFoo(list: List<FooEntity>) {
+        db.fooDao().insert(list)
+    }
 }
 

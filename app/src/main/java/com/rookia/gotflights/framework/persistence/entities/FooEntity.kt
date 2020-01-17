@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class FooEntity constructor(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: String,
+    val id: Int,
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "price")
