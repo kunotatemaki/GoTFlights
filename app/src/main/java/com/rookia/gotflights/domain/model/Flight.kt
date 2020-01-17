@@ -25,7 +25,7 @@ data class Flight(
         getConvertedPrice()?.let {
             var formattedText = "${formatDecimalValue(it)}$targetCurrencyName"
             if (currency != targetCurrencyName) {
-                formattedText += "  ($price$currency)"
+                formattedText += " ($price$currency)"
             }
             return formattedText
         }

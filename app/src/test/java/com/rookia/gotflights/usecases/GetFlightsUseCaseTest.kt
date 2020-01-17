@@ -16,9 +16,9 @@ import org.junit.Rule
 import org.junit.Test
 import testclasses.getFlight
 import testclasses.getItem
-import timber.log.Timber
 
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class GetFlightsUseCaseTest {
 
     @get:Rule
@@ -46,12 +46,12 @@ class GetFlightsUseCaseTest {
         "Zamora",
         "Sevilla",
         10.toBigDecimal()
-        ).also { it.setExchangeRate(1.toBigDecimal()) }
+    ).also { it.setExchangeRate(1.toBigDecimal()) }
     private val flight5 = getFlight(
         "Valladolid",
         "Madrid",
         10.toBigDecimal()
-        ).also { it.setExchangeRate(1.toBigDecimal()) }
+    ).also { it.setExchangeRate(1.toBigDecimal()) }
 
     private val flightEUR = getFlight("Coruña", "Zaragoza", 10.toBigDecimal(), "EUR")
     private val flightGBP = getFlight("Zamora", "Sevilla", 10.toBigDecimal(), "GBP")
@@ -65,42 +65,57 @@ class GetFlightsUseCaseTest {
     @Test
     fun getFlightsWithSuccessResponse() {
         every {
-            repository.getFlights(any(), any())
+            repository.getFlights(any())
         } returns MutableLiveData<Result<List<Flight>>>().also {
             it.postValue(Result.success(flights))
         }
-        val flights = getFlightsUseCase.getFlights()
-        val response = flights.getItem()
-        assertEquals(Result.Status.SUCCESS, response.status)
-        assertEquals(2, response.data!!.size)
+        runBlocking {
+            val flights = getFlightsUseCase.getFlights()
+            val response = flights.getItem()
+            val list = response.data!!
+            val currencyList = getFlightsUseCase.convertToSameCurrency(list)
+            val finalList = getFlightsUseCase.orderByPriceAndRemoveDuplicates(currencyList)
+            assertEquals(Result.Status.SUCCESS, response.status)
+            assertEquals(2, finalList.size)
+        }
     }
 
     @Test
     fun getFlightsWithErrorResponse() {
         val message = "error message"
         every {
-            repository.getFlights(any(), any())
+            repository.getFlights(any())
         } returns MutableLiveData<Result<List<Flight>>>().also {
             it.postValue(Result.error(message, flights))
         }
-        val flights = getFlightsUseCase.getFlights()
-        val response = flights.getItem()
-        assertEquals(Result.Status.ERROR, response.status)
-        assertEquals(message, response.message)
-        assertEquals(2, response.data!!.size)
+        runBlocking {
+            val flights = getFlightsUseCase.getFlights()
+            val response = flights.getItem()
+            val list = response.data!!
+            val currencyList = getFlightsUseCase.convertToSameCurrency(list)
+            val finalList = getFlightsUseCase.orderByPriceAndRemoveDuplicates(currencyList)
+            assertEquals(Result.Status.ERROR, response.status)
+            assertEquals(message, response.message)
+            assertEquals(2, finalList.size)
+        }
     }
 
     @Test
     fun getFlightsWithLoadingResponse() {
         every {
-            repository.getFlights(any(), any())
+            repository.getFlights(any())
         } returns MutableLiveData<Result<List<Flight>>>().also {
             it.postValue(Result.loading())
         }
-        val flights = getFlightsUseCase.getFlights()
-        val response = flights.getItem()
-        assertEquals(Result.Status.LOADING, response.status)
-        assertEquals(0, response.data!!.size)
+        runBlocking {
+            val flights = getFlightsUseCase.getFlights()
+            val response = flights.getItem()
+            val list = response.data
+            val currencyList = getFlightsUseCase.convertToSameCurrency(list)
+            val finalList = getFlightsUseCase.orderByPriceAndRemoveDuplicates(currencyList)
+            assertEquals(Result.Status.LOADING, response.status)
+            assertEquals(0, finalList.size)
+        }
     }
 
     @Test
@@ -117,15 +132,20 @@ class GetFlightsUseCaseTest {
     fun `convert to same currency a list of EUR, GBP and USD`() {
 
         runBlocking(Dispatchers.IO) {
-            coEvery { repository.getExchangeRate(from = "GBP", to = "EUR") } returns Result.success(ExchangeRate("EUR", 1.5.toBigDecimal()))
-            coEvery { repository.getExchangeRate(from = "USD", to = "EUR") } returns Result.success(ExchangeRate("EUR", 0.8.toBigDecimal()))
-            val list = getFlightsUseCase.convertToSameCurrency(listOf(flightEUR, flightGBP, flightUSD))
+            coEvery { repository.getExchangeRate(from = "GBP", to = "EUR") } returns Result.success(
+                ExchangeRate("EUR", 1.5.toBigDecimal())
+            )
+            coEvery { repository.getExchangeRate(from = "USD", to = "EUR") } returns Result.success(
+                ExchangeRate("EUR", 0.8.toBigDecimal())
+            )
+            val list =
+                getFlightsUseCase.convertToSameCurrency(listOf(flightEUR, flightGBP, flightUSD))
             assertEquals(10.toBigDecimal(), list.first().getConvertedPrice())
-            assertEquals("10,00€", list.first().getConvertedPriceFormatted())
+            assertEquals("10,00EUR", list.first().getConvertedPriceFormatted())
             assertEquals(15.0.toBigDecimal(), list[1].getConvertedPrice())
-            assertEquals("15,00€", list[1].getConvertedPriceFormatted())
+            assertEquals("15,00EUR (10GBP)", list[1].getConvertedPriceFormatted())
             assertEquals(8.0.toBigDecimal(), list.last().getConvertedPrice())
-            assertEquals("8,00€", list.last().getConvertedPriceFormatted())
+            assertEquals("8,00EUR (10USD)", list.last().getConvertedPriceFormatted())
         }
     }
 
@@ -133,9 +153,14 @@ class GetFlightsUseCaseTest {
     fun `convert to same currency a list of EUR, GBP and USD removing wrong values`() {
 
         runBlocking(Dispatchers.IO) {
-            coEvery { repository.getExchangeRate(from = "GBP", to = "EUR") } returns Result.success(ExchangeRate("EUR", 1.5.toBigDecimal()))
-            coEvery { repository.getExchangeRate(from = "USD", to = "EUR") } returns Result.success(ExchangeRate("EUR", null))
-            val list = getFlightsUseCase.convertToSameCurrency(listOf(flightEUR, flightGBP, flightUSD))
+            coEvery { repository.getExchangeRate(from = "GBP", to = "EUR") } returns Result.success(
+                ExchangeRate("EUR", 1.5.toBigDecimal())
+            )
+            coEvery { repository.getExchangeRate(from = "USD", to = "EUR") } returns Result.success(
+                ExchangeRate("EUR", null)
+            )
+            val list =
+                getFlightsUseCase.convertToSameCurrency(listOf(flightEUR, flightGBP, flightUSD))
             assertEquals(2, list.size)
             assertEquals(10.toBigDecimal(), list.first().getConvertedPrice())
             assertEquals(15.0.toBigDecimal(), list.last().getConvertedPrice())

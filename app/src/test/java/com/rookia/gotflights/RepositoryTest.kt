@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit
 @ExperimentalCoroutinesApi
 class RepositoryTest {
     private val targetCurrencyName = "EUR"
-    private val targetCurrencySymbol = "€"
 
     private val mainThreadSurrogate = newSingleThreadContext("UI thread")
 
@@ -72,7 +71,7 @@ class RepositoryTest {
         cacheResponse = listOf(flight1, flight2, flight3)
         networkResponse = ApiResponse(listOf(nFlight1, nFlight2, nFlight3))
         Dispatchers.setMain(mainThreadSurrogate)
-        every { networkServiceFactory.getServiceInstance() } returns api
+        every { networkServiceFactory.getFlightsServiceInstance() } returns api
     }
 
     @After
@@ -91,10 +90,7 @@ class RepositoryTest {
 
             coEvery { api.getFlights() } returns Response.success(200, networkResponse)
 
-            val response = repository.getFlights(
-                targetCurrencyName,
-                targetCurrencySymbol
-            )
+            val response = repository.getFlights(targetCurrencyName)
             val responseObserver = response.test()
             val latch = CountDownLatch(2)
             val observer = Observer<Result<List<Flight>>> {
@@ -119,10 +115,7 @@ class RepositoryTest {
 
             coEvery { api.getFlights() } returns Response.success(200, networkResponse)
 
-            val response = repository.getFlights(
-                targetCurrencyName,
-                targetCurrencySymbol
-            )
+            val response = repository.getFlights(targetCurrencyName)
             val responseObserver = response.test()
             val latch = CountDownLatch(2)
             val observer = Observer<Result<List<Flight>>> {
@@ -157,10 +150,7 @@ class RepositoryTest {
                 )
             )
 
-            val response = repository.getFlights(
-                targetCurrencyName,
-                targetCurrencySymbol
-            )
+            val response = repository.getFlights(targetCurrencyName)
             val responseObserver = response.test()
             val latch = CountDownLatch(2)
             val observer = Observer<Result<List<Flight>>> {
@@ -191,10 +181,7 @@ class RepositoryTest {
             coEvery { api.getFlights() } throws Exception()
         }
 
-        val response = repository.getFlights(
-            targetCurrencyName,
-            targetCurrencySymbol
-        )
+        val response = repository.getFlights(targetCurrencyName)
         val responseObserver = response.test()
         val latch = CountDownLatch(2)
         val observer =
