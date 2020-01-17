@@ -4,9 +4,10 @@ package com.rookia.gotflights.framework.repository
 import androidx.lifecycle.LiveData
 import com.rookia.gotflights.data.network.NetworkServiceFactory
 import com.rookia.gotflights.data.repository.Repository
+import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.model.FlightsCache
-import com.rookia.gotflights.domain.network.Flight
-import com.rookia.gotflights.domain.network.FlightApiResponse
+import com.rookia.gotflights.domain.network.model.ApiResponse
+import com.rookia.gotflights.domain.network.model.FlightApiResponse
 import com.rookia.gotflights.domain.vo.Result
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,7 +37,7 @@ class RepositoryImpl @Inject constructor(
     override fun getFlightsFromCache(): LiveData<List<Flight>> =
         flightsCache.getListOfFlightsInCache()
 
-    override suspend fun getFlightsFromNetwork(): Result<FlightApiResponse> {
+    override suspend fun getFlightsFromNetwork(): Result<ApiResponse> {
         return try {
             val resp = networkServiceFactory.getServiceInstance().getFlights()
             if (resp.isSuccessful && resp.body() != null) {
@@ -49,7 +50,7 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    private fun saveToCache(flights: List<Flight>) {
+    private fun saveToCache(flights: List<FlightApiResponse>) {
         flightsCache.saveListOfFlightsInCache(flights)
     }
 

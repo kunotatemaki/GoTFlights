@@ -1,4 +1,4 @@
-package com.rookia.gotflights.domain.network
+package com.rookia.gotflights.domain.model
 
 data class Outbound(
     override val airline: String?,
@@ -8,5 +8,6 @@ data class Outbound(
     override val departureDate: String?,
     override val departureTime: String?,
     override val destination: String?,
-    override val origin: String?
-) : Leg
+    override val origin: String?,
+    override val elapsedTime: String?
+): Leg

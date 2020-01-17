@@ -11,10 +11,10 @@ import com.rookia.gotflights.R
 import com.rookia.gotflights.data.resources.ResourcesManager
 import com.rookia.gotflights.databinding.BindingComponent
 import com.rookia.gotflights.databinding.FlightRowBinding
-import com.rookia.gotflights.domain.network.Flight
+import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.utils.formatDecimalValue
 
-
+// TODO: 17/01/2020 usar un recycler normal
 class FlightsAdapter(
     private val bindingComponent: BindingComponent,
     private val resourcesManager: ResourcesManager

@@ -1,4 +1,4 @@
-package com.rookia.gotflights.domain.network
+package com.rookia.gotflights.domain.model
 
 import java.math.BigDecimal
 

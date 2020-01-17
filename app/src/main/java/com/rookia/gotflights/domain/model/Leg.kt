@@ -1,4 +1,4 @@
-package com.rookia.gotflights.domain.network
+package com.rookia.gotflights.domain.model
 
 interface Leg {
     val airline: String?
@@ -9,4 +9,5 @@ interface Leg {
     val departureTime: String?
     val destination: String?
     val origin: String?
+    val elapsedTime: String?
 }

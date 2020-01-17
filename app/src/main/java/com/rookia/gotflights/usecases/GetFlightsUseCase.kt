@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import com.rookia.gotflights.data.repository.Repository
-import com.rookia.gotflights.domain.network.Flight
+import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.vo.Result
 
 class GetFlightsUseCase constructor(private val repository: Repository) {

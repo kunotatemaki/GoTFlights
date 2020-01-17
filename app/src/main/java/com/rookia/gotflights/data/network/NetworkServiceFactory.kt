@@ -1,6 +1,6 @@
 package com.rookia.gotflights.data.network
 
-import com.rookia.gotflights.domain.network.AppApi
+import com.rookia.gotflights.domain.network.GotFlightsApi
 
 interface NetworkServiceFactory {
 
@@ -9,6 +9,6 @@ interface NetworkServiceFactory {
 
     }
 
-    fun getServiceInstance(): AppApi
+    fun getServiceInstance(): GotFlightsApi
 }
 

@@ -8,7 +8,7 @@
 
         <variable
             name="flight"
-            type="com.rookia.gotflights.domain.network.Flight" />
+            type="com.rookia.gotflights.domain.model.Flight" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

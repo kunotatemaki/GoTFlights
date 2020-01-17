@@ -4,7 +4,7 @@ package com.rookia.gotflights
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.rookia.gotflights.domain.network.AppApi.Item
+import com.rookia.gotflights.domain.network.GotFlightsApi.Item
 import com.rookia.gotflights.data.persistence.PersistenceManager
 import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
 import com.rookia.gotflights.framework.persistence.databases.AppDatabase

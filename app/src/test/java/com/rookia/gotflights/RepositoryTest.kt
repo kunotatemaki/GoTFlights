@@ -6,9 +6,9 @@ import androidx.lifecycle.Observer
 import com.jraska.livedata.test
 import com.rookia.gotflights.data.network.NetworkServiceFactory
 import com.rookia.gotflights.domain.model.FlightsCache
-import com.rookia.gotflights.domain.network.AppApi
+import com.rookia.gotflights.domain.network.GotFlightsApi
 import com.rookia.gotflights.domain.network.Flight
-import com.rookia.gotflights.domain.network.FlightApiResponse
+import com.rookia.gotflights.domain.network.ApiResponse
 import com.rookia.gotflights.domain.vo.Result
 import com.rookia.gotflights.framework.repository.RepositoryImpl
 import io.mockk.MockKAnnotations
@@ -48,13 +48,13 @@ class RepositoryTest {
     lateinit var flightsCache: FlightsCache
 
     @MockK
-    lateinit var api: AppApi
+    lateinit var api: GotFlightsApi
 
     @InjectMockKs
     private lateinit var repository: RepositoryImpl
 
     private lateinit var cacheResponse: List<Flight>
-    private lateinit var networkResponse: FlightApiResponse
+    private lateinit var networkResponse: ApiResponse
     private val flight1 = getFlight("Valladolid", "Zamora", 1.0.toBigDecimal())
     private val flight2 = getFlight("Burgos", "León", 2.0.toBigDecimal())
     private val flight3 = getFlight("Oviedo", "Salamanca", 3.0.toBigDecimal())
@@ -64,7 +64,7 @@ class RepositoryTest {
     fun setUp() {
         MockKAnnotations.init(this)
         cacheResponse = listOf(flight1, flight2, flight3)
-        networkResponse = FlightApiResponse(listOf(flight1, flight2, flight3))
+        networkResponse = ApiResponse(listOf(flight1, flight2, flight3))
         Dispatchers.setMain(mainThreadSurrogate)
         every { networkServiceFactory.getServiceInstance() } returns api
     }

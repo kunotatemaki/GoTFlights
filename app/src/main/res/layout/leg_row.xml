@@ -7,7 +7,7 @@
 
         <variable
             name="leg"
-            type="com.rookia.gotflights.domain.network.Leg" />
+            type="com.rookia.gotflights.domain.model.Leg" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +18,8 @@
             android:id="@+id/leg_logo"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="@dimen/list_item_spacing_half"
+            android:layout_marginTop="@dimen/list_item_spacing_half"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/leg_name"
             imageRounded="@{leg.airlineImage}"
@@ -30,10 +30,10 @@
             android:id="@+id/leg_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/list_item_spacing"
             android:text="@{leg.airline}"
             android:textSize="12sp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/list_item_spacing_half"
             app:layout_constraintBottom_toBottomOf="@id/leg_logo"
             app:layout_constraintTop_toTopOf="@id/leg_logo"
             app:layout_constraintStart_toStartOf="parent"
@@ -112,7 +112,8 @@
             app:layout_constraintEnd_toStartOf="@id/leg_arrival_time"
             app:layout_constraintStart_toEndOf="@id/leg_departure_time"
             app:layout_constraintBaseline_toBaselineOf="@+id/leg_departure_time"
-            tools:text="18h 24 min" />
+            tools:text="18h 24 min"
+            android:text="@{leg.elapsedTime}"/>
 
         <ImageView
             android:id="@+id/leg_direction"

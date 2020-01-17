@@ -1,8 +1,8 @@
 package testclasses
 
-import com.rookia.gotflights.domain.network.Flight
-import com.rookia.gotflights.domain.network.Inbound
-import com.rookia.gotflights.domain.network.Outbound
+import com.rookia.gotflights.domain.model.Flight
+import com.rookia.gotflights.domain.model.Inbound
+import com.rookia.gotflights.domain.model.Outbound
 import java.math.BigDecimal
 
 
@@ -17,7 +17,8 @@ fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
             departureDate = "20/02/1902",
             departureTime = "20:08",
             origin = origin,
-            destination = destination
+            destination = destination,
+            elapsedTime = ""
         ),
         outbound = Outbound(
             airline = "airline",
@@ -27,7 +28,8 @@ fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
             departureDate = "20/02/1902",
             departureTime = "20:08",
             origin = destination,
-            destination = origin
+            destination = origin,
+            elapsedTime = ""
         ),
         price = price
     )

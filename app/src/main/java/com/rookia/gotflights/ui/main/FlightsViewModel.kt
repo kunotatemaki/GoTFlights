@@ -2,7 +2,7 @@ package com.rookia.gotflights.ui.main
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
-import com.rookia.gotflights.domain.network.Flight
+import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.vo.Result
 import com.rookia.gotflights.usecases.GetFlightsUseCase
 

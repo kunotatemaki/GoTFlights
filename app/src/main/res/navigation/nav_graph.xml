@@ -7,6 +7,6 @@
 
     <fragment android:id="@+id/main_fragment"
               android:name="com.rookia.gotflights.ui.main.FlightsFragment"
-              android:label="@string/products_title" tools:layout="@layout/main_fragment"/>
+              android:label="@string/flights_title" tools:layout="@layout/main_fragment"/>
 
 </navigation>
