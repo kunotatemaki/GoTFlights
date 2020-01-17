@@ -16,11 +16,6 @@ import kotlin.math.pow
 @Suppress("unused")
 class ViewUtilsImpl @Inject constructor(): ViewUtils {
 
-    //todo extract this as an extension class
-    fun setTintInImageView(view: ImageView, color: Int) {
-        ImageViewCompat.setImageTintList(view, ColorStateList.valueOf(color))
-    }
-
     override fun needToSetThemeAsDark(backgroundColor: Int): Boolean {
 
         var red = Color.red(backgroundColor) / 255.0
