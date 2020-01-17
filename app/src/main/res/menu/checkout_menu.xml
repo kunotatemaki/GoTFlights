@@ -5,5 +5,5 @@
         android:id="@+id/filter_item"
         app:showAsAction="always"
         android:title="@string/filter"
-        android:icon="@drawable/actionbar_cart"/>
+        android:icon="@drawable/ic_filter_list_white_24dp"/>
 </menu>
