@@ -6,9 +6,6 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 
-
-
-
 @Throws(InterruptedException::class)
 fun <T> LiveData<T>.getItem(): T {
     val data = arrayOfNulls<Any>(1)

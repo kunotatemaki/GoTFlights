@@ -4,16 +4,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.rookia.gotflights.data.repository.Repository
 import com.rookia.gotflights.domain.network.Flight
-import com.rookia.gotflights.domain.network.Inbound
-import com.rookia.gotflights.domain.network.Outbound
 import com.rookia.gotflights.domain.vo.Result
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import testclasses.getFlight
 import testclasses.getItem
-import java.math.BigDecimal
 
 
 class GetFlightsUseCaseTest {
@@ -77,29 +75,5 @@ class GetFlightsUseCaseTest {
         assertEquals("Zamora", orderedList.first().inbound?.origin)
     }
 
-    private fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
-        Flight(
-            currency = "EUR",
-            inbound = Inbound(
-                airline = "airline",
-                airlineImage = "image",
-                arrivalDate = "20/02/1902",
-                arrivalTime = "20:08",
-                departureDate = "20/02/1902",
-                departureTime = "20:08",
-                origin = origin,
-                destination = destination
-            ),
-            outbound = Outbound(
-                airline = "airline",
-                airlineImage = "image",
-                arrivalDate = "20/02/1902",
-                arrivalTime = "20:08",
-                departureDate = "20/02/1902",
-                departureTime = "20:08",
-                origin = destination,
-                destination = origin
-            ),
-            price = price
-        )
+
 }
