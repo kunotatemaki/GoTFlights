@@ -1,40 +1,70 @@
 package com.rookia.gotflights.usecases
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import com.rookia.gotflights.data.repository.Repository
 import com.rookia.gotflights.domain.network.Flight
 import com.rookia.gotflights.domain.network.Inbound
 import com.rookia.gotflights.domain.network.Outbound
+import com.rookia.gotflights.domain.vo.Result
+import io.mockk.every
 import io.mockk.mockk
-import org.junit.After
-import org.junit.Before
-import org.junit.Test
-import java.math.BigDecimal
 import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
+import testclasses.getItem
+import java.math.BigDecimal
 
 
 class GetFlightsUseCaseTest {
 
-    private val fligth1 = getFlight("Valladolid", "Madrid", 12.toBigDecimal())
-    private val fligth2 = getFlight("Zamora", "Sevilla", 1.toBigDecimal())
-    private val fligth3 = getFlight("Valladolid", "Madrid", 11.toBigDecimal())
-    private val fligth4 = getFlight("Zamora", "Sevilla", 10.toBigDecimal())
-    private val fligth5 = getFlight("Valladolid", "Madrid", 10.toBigDecimal())
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
 
-    private val flights = listOf(fligth1, fligth2, fligth3, fligth4, fligth5)
+    private val flight1 = getFlight("Valladolid", "Madrid", 12.toBigDecimal())
+    private val flight2 = getFlight("Zamora", "Sevilla", 1.toBigDecimal())
+    private val flight3 = getFlight("Valladolid", "Madrid", 11.toBigDecimal())
+    private val flight4 = getFlight("Zamora", "Sevilla", 10.toBigDecimal())
+    private val flight5 = getFlight("Valladolid", "Madrid", 10.toBigDecimal())
+
+    private val flights = listOf(flight1, flight2, flight3, flight4, flight5)
 
     private val repository: Repository = mockk()
     private val getFlightsUseCase = GetFlightsUseCase(repository)
 
-    @Before
-    fun setUp() {
-    }
-
-    @After
-    fun tearDown() {
+    @Test
+    fun getFlightsWithSuccessResponse() {
+        every { repository.getFlights() } returns MutableLiveData<Result<List<Flight>>>().also {
+            it.postValue(Result.success(flights))
+        }
+        val flights = getFlightsUseCase.getFlights()
+        val response = flights.getItem()
+        assertEquals(Result.Status.SUCCESS, response.status)
+        assertEquals(2, response.data!!.size)
     }
 
     @Test
-    fun getFlights() {
+    fun getFlightsWithErrorResponse() {
+        val message = "error message"
+        every { repository.getFlights() } returns MutableLiveData<Result<List<Flight>>>().also {
+            it.postValue(Result.error(message, flights))
+        }
+        val flights = getFlightsUseCase.getFlights()
+        val response = flights.getItem()
+        assertEquals(Result.Status.ERROR, response.status)
+        assertEquals(message, response.message)
+        assertEquals(2, response.data!!.size)
+    }
+
+    @Test
+    fun getFlightsWithLoadingResponse() {
+        every { repository.getFlights() } returns MutableLiveData<Result<List<Flight>>>().also {
+            it.postValue(Result.loading())
+        }
+        val flights = getFlightsUseCase.getFlights()
+        val response = flights.getItem()
+        assertEquals(Result.Status.LOADING, response.status)
+        assertEquals(0, response.data!!.size)
     }
 
     @Test

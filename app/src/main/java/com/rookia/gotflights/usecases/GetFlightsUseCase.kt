@@ -15,13 +15,6 @@ class GetFlightsUseCase constructor(private val repository: Repository) {
             val list = flights.data
             val status = flights.status
             val message = flights.message
-//            val orderedList =
-//                list?.sortedWith(
-//                    compareBy(
-//                        { "${it.inbound?.origin}${it.inbound?.destination}" },
-//                        { it.price}
-//                    )
-//                )?.distinctBy {  "${it.inbound?.origin}${it.inbound?.destination}"  }
 
             val orderedList = orderByPriceAndRemoveDuplicates(list)
 
@@ -30,9 +23,9 @@ class GetFlightsUseCase constructor(private val repository: Repository) {
                 Result.Status.ERROR -> Result.error(message, orderedList)
                 Result.Status.LOADING -> Result.loading(orderedList)
             }
-            val liveData = MutableLiveData<Result<List<Flight>>>()
-            liveData.postValue(result)
-            liveData
+            MutableLiveData<Result<List<Flight>>>().also {
+                it.postValue(result)
+            }
         }
 
     @VisibleForTesting

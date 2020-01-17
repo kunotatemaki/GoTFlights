@@ -1,4 +1,4 @@
-package com.rookia.gotflights
+package testclasses
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
