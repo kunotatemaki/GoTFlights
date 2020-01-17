@@ -5,6 +5,9 @@
     <string name="warning">Warning</string>
     <string name="filter">Filter</string>
     <string name="flights_title">Dragon Flights</string>
+    <string name="day">d</string>
+    <string name="hour">h</string>
+    <string name="minutes">min</string>
 </resources>
 <!--todo quitar los strings, las dimensiones...-->
 <!--todo splash drawable...-->
