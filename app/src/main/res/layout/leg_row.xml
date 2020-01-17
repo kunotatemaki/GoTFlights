@@ -127,7 +127,7 @@
             app:layout_constraintStart_toEndOf="@id/leg_destination"
             app:layout_constraintTop_toTopOf="@id/leg_origin"
             app:layout_constraintBottom_toBottomOf="@id/leg_origin"
-            tools:src="@drawable/ic_flight_takeoff_black_24dp"
+            android:src="@drawable/ic_flight_takeoff_black_24dp"
             tools:ignore="ContentDescription" />
 
 
