@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.jraska.livedata.test
 import com.rookia.gotflights.data.network.NetworkServiceFactory
+import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.model.FlightsCache
 import com.rookia.gotflights.domain.network.GotFlightsApi
-import com.rookia.gotflights.domain.network.Flight
-import com.rookia.gotflights.domain.network.ApiResponse
+import com.rookia.gotflights.domain.network.model.ApiResponse
 import com.rookia.gotflights.domain.vo.Result
 import com.rookia.gotflights.framework.repository.RepositoryImpl
 import io.mockk.MockKAnnotations
@@ -27,6 +27,7 @@ import org.junit.Rule
 import org.junit.Test
 import retrofit2.Response
 import testclasses.getFlight
+import testclasses.getFlightFromNetwork
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -58,13 +59,16 @@ class RepositoryTest {
     private val flight1 = getFlight("Valladolid", "Zamora", 1.0.toBigDecimal())
     private val flight2 = getFlight("Burgos", "León", 2.0.toBigDecimal())
     private val flight3 = getFlight("Oviedo", "Salamanca", 3.0.toBigDecimal())
+    private val nFlight1 = getFlightFromNetwork("Valladolid", "Zamora", 1.0.toBigDecimal())
+    private val nFlight2 = getFlightFromNetwork("Burgos", "León", 2.0.toBigDecimal())
+    private val nFlight3 = getFlightFromNetwork("Oviedo", "Salamanca", 3.0.toBigDecimal())
 
 
     @Before
     fun setUp() {
         MockKAnnotations.init(this)
         cacheResponse = listOf(flight1, flight2, flight3)
-        networkResponse = ApiResponse(listOf(flight1, flight2, flight3))
+        networkResponse = ApiResponse(listOf(nFlight1, nFlight2, nFlight3))
         Dispatchers.setMain(mainThreadSurrogate)
         every { networkServiceFactory.getServiceInstance() } returns api
     }

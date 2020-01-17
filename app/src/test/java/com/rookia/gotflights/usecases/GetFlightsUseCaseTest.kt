@@ -3,7 +3,7 @@ package com.rookia.gotflights.usecases
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.rookia.gotflights.data.repository.Repository
-import com.rookia.gotflights.domain.network.Flight
+import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.vo.Result
 import io.mockk.every
 import io.mockk.mockk
