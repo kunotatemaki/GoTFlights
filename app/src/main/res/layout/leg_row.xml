@@ -8,6 +8,10 @@
         <variable
             name="leg"
             type="com.rookia.gotflights.domain.model.Leg" />
+
+        <variable
+            name="resources"
+            type="com.rookia.gotflights.data.resources.ResourcesManager" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,8 +116,8 @@
             app:layout_constraintEnd_toStartOf="@id/leg_arrival_time"
             app:layout_constraintStart_toEndOf="@id/leg_departure_time"
             app:layout_constraintBaseline_toBaselineOf="@+id/leg_departure_time"
-            tools:text="18h 24 min"
-            android:text="@{leg.elapsedTime}"/>
+            tools:text="18h, 24min"
+            android:text="@{leg.getElapsedTime(resources)}"/>
 
         <ImageView
             android:id="@+id/leg_direction"

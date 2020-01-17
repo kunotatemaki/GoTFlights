@@ -6,8 +6,6 @@ import com.rookia.gotflights.domain.model.Outbound
 import com.rookia.gotflights.domain.network.model.FlightApiResponse
 import com.rookia.gotflights.utils.BaseMapper
 
-
-//todo convertir aquí a flight distinto, metiendo el tiempo total en días, horas...
 object ApiToCacheMapper : BaseMapper<FlightApiResponse, Flight> {
     override fun map(type: FlightApiResponse): Flight =
         Flight(
@@ -18,22 +16,20 @@ object ApiToCacheMapper : BaseMapper<FlightApiResponse, Flight> {
                 airlineImage = type.inbound?.airlineImage,
                 arrivalDate = type.inbound?.arrivalDate,
                 arrivalTime = type.inbound?.arrivalTime,
-                departureTime = type.inbound?.arrivalTime,
-                departureDate = type.inbound?.arrivalDate,
+                departureTime = type.inbound?.departureTime,
+                departureDate = type.inbound?.departureDate,
                 origin = type.inbound?.origin,
-                destination = type.inbound?.destination,
-                elapsedTime = ""
+                destination = type.inbound?.destination
             ),
             outbound = Outbound(
                 airline = type.inbound?.airline,
                 airlineImage = type.inbound?.airlineImage,
                 arrivalDate = type.inbound?.arrivalDate,
                 arrivalTime = type.inbound?.arrivalTime,
-                departureTime = type.inbound?.arrivalTime,
-                departureDate = type.inbound?.arrivalDate,
+                departureTime = type.inbound?.departureTime,
+                departureDate = type.inbound?.departureDate,
                 origin = type.inbound?.origin,
-                destination = type.inbound?.destination,
-                elapsedTime = ""
+                destination = type.inbound?.destination
             )
         )
 }

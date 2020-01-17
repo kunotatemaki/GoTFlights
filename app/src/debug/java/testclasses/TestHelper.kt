@@ -20,8 +20,7 @@ fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
             departureDate = "20/02/1902",
             departureTime = "20:08",
             origin = origin,
-            destination = destination,
-            elapsedTime = ""
+            destination = destination
         ),
         outbound = Outbound(
             airline = "airline",
@@ -31,8 +30,7 @@ fun getFlight(origin: String, destination: String, price: BigDecimal): Flight =
             departureDate = "20/02/1902",
             departureTime = "20:08",
             origin = destination,
-            destination = origin,
-            elapsedTime = ""
+            destination = origin
         ),
         price = price
     )

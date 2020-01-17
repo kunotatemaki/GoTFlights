@@ -48,6 +48,8 @@ class FlightsAdapter(
         @SuppressLint("SetTextI18n")
         fun bindTo(flight: Flight?) {
             binding.flight = flight
+            binding.resources = resourcesManager
+            val test = flight!!.inbound!!.getElapsedTime(resourcesManager)
             binding.price.text = "${formatDecimalValue(flight?.price)}€"
             binding.inboundRow.legDirection.setImageDrawable(resourcesManager.getDrawable(R.drawable.ic_flight_takeoff_black_24dp))
             binding.outboundRow.legDirection.setImageDrawable(resourcesManager.getDrawable(R.drawable.ic_flight_land_black_24dp))

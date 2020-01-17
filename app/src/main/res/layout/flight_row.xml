@@ -9,6 +9,10 @@
         <variable
             name="flight"
             type="com.rookia.gotflights.domain.model.Flight" />
+
+        <variable
+            name="resources"
+            type="com.rookia.gotflights.data.resources.ResourcesManager" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +26,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:leg="@{flight.inbound}" />
+            bind:leg="@{flight.inbound}"
+            bind:resources="@{resources}" />
 
         <ImageView
             android:id="@+id/leg_separator"
@@ -44,7 +49,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/leg_separator"
-            bind:leg="@{flight.outbound}" />
+            bind:leg="@{flight.outbound}"
+            bind:resources="@{resources}" />
 
         <ImageView
             android:id="@+id/price_separator"

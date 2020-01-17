@@ -8,6 +8,5 @@ data class Outbound(
     override val departureDate: String?,
     override val departureTime: String?,
     override val destination: String?,
-    override val origin: String?,
-    override val elapsedTime: String?
+    override val origin: String?
 ): Leg

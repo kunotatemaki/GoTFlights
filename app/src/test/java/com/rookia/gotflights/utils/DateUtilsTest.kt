@@ -25,7 +25,7 @@ class DateUtilsTest {
     fun parseStringDate() {
 
         val date = DateUtils.parseStringDate("11/18/2275", "17:12")
-        val calendar: Calendar = Calendar.getInstance();
+        val calendar: Calendar = Calendar.getInstance()
         calendar.time = date!!
         assertEquals(2275, calendar.get(Calendar.YEAR))
         assertEquals(11 - 1, calendar.get(Calendar.MONTH)) // month is zero-indexed
