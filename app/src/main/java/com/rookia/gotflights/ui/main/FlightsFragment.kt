@@ -7,11 +7,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+import com.appyvet.materialrangebar.RangeBar
+import com.appyvet.materialrangebar.RangeBar.OnRangeBarChangeListener
 import com.rookia.gotflights.R
 import com.rookia.gotflights.databinding.MainFragmentBinding
 import com.rookia.gotflights.di.injectViewModel
-import com.rookia.gotflights.ui.common.BaseFragment
 import com.rookia.gotflights.domain.vo.Result
+import com.rookia.gotflights.ui.common.BaseFragment
+import com.rookia.gotflights.utils.RangeBarValues
+import java.lang.ref.WeakReference
+import kotlin.math.abs
 
 
 class FlightsFragment : BaseFragment() {
@@ -50,6 +55,31 @@ class FlightsFragment : BaseFragment() {
         binding.filtersApply.setOnClickListener {
             applyFilters()
         }
+
+        binding.rangeBar.setOnRangeBarChangeListener(object : OnRangeBarChangeListener {
+            override fun onRangeChangeListener(
+                rangeBar: RangeBar,
+                leftPinIndex: Int,
+                rightPinIndex: Int,
+                leftPinValue: String,
+                rightPinValue: String
+            ) {
+                with(binding.rangeBar) {
+                    binding.startValue.text =
+                        RangeBarValues.getPinValue(this.tickStart, this.tickInterval, leftPinIndex)
+                            .toString()
+                    binding.endValue.text =
+                        RangeBarValues.getPinValue(
+                            this.tickStart,
+                            this.tickInterval,
+                            abs(rightPinIndex)
+                        ).toString()
+                }
+            }
+
+            override fun onTouchEnded(rangeBar: RangeBar) {}
+            override fun onTouchStarted(rangeBar: RangeBar) {}
+        })
         return binding.root
     }
 
@@ -87,7 +117,7 @@ class FlightsFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_filter -> {
-                binding.filtersContainer.visibility = View.VISIBLE
+                showFilterValues()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -105,9 +135,36 @@ class FlightsFragment : BaseFragment() {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun applyFilters(){
+    private fun showFilterValues() {
+        if (viewModel.canShowFilter().not()) {
+            activity?.let {
+                viewUtils.showAlertDialog(
+                    activity = WeakReference(it),
+                    allowCancelWhenTouchingOutside = false,
+                    positiveButton = resourcesManager.getString(R.string.accept),
+                    message = resourcesManager.getString(R.string.no_values)
+                )
+            }
+        } else {
+            val min = RangeBarValues.getLowerValue(viewModel.minPrice ?: return)
+            val max = RangeBarValues.getHigherValue(viewModel.maxPrice ?: return)
+            val interval = RangeBarValues.getInterval(max, min)
+            binding.rangeBar.tickStart = min.toFloat()
+            binding.rangeBar.tickEnd = max.toFloat()
+            binding.rangeBar.setTickInterval(interval.toFloat())
+            binding.filtersContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun applyFilters() {
         binding.filtersContainer.visibility = View.GONE
-        viewModel.filterFlights()
+        with(binding.rangeBar) {
+            val minVal =
+                RangeBarValues.getPinValue(this.tickStart, this.tickInterval, this.leftIndex)
+            val maxVal =
+                RangeBarValues.getPinValue(this.tickStart, this.tickInterval, this.rightIndex)
+            viewModel.filterFlights(minVal.toFloat(), maxVal.toFloat() )
+        }
     }
 
 }

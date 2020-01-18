@@ -9,5 +9,6 @@
     <string name="hour">h</string>
     <string name="minutes">min</string>
     <string name="apply">Apply</string>
+    <string name="no_values">No values to be filtered</string>
 </resources>
 <!--todo splash drawable...-->

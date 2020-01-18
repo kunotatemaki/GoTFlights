@@ -67,13 +67,14 @@ open class FlightsViewModel constructor(
         fetchTrigger.value = System.currentTimeMillis()
     }
 
-    fun filterFlights() =
+    fun filterFlights(minVal: Float, maxVal: Float) =
         viewModelScope.launch {
             flights.value = Result.loading(flights.value?.data)
-            val filteredList = filterUseCase.filterListOfFlights(listOfFlights, 100.toBigDecimal(), 200.toBigDecimal())
+            val filteredList = filterUseCase.filterListOfFlights(listOfFlights, minVal.toBigDecimal(), maxVal.toBigDecimal())
             flights.value = Result.success(filteredList)
         }
 
+    fun canShowFilter(): Boolean = maxPrice != null && minPrice != null
 
 
 }

@@ -30,14 +30,14 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/filters_container"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/list_item_spacing"
             android:layout_marginEnd="@dimen/list_item_spacing"
             android:layout_marginBottom="@dimen/list_item_spacing"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone"
             tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -45,13 +45,56 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/text"
+                    android:id="@+id/start_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_spacing_half"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/range_bar"
+                    app:layout_constraintStart_toStartOf="@id/range_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="12" />
+
+                <TextView
+                    android:id="@+id/end_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/list_item_spacing_half"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/range_bar"
+                    app:layout_constraintEnd_toEndOf="@id/range_bar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="42" />
+
+                <com.appyvet.materialrangebar.RangeBar
+                    android:id="@+id/range_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="@dimen/list_item_spacing_half"
+                    android:layout_marginTop="@dimen/list_item_spacing"
+                    android:layout_marginEnd="@dimen/list_item_spacing_half"
+                    android:layout_marginBottom="@dimen/list_item_spacing"
+                    app:layout_constraintBottom_toTopOf="@id/filters_apply"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:textSize="40sp"
-                    android:text="Cretino"/>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:mrb_barWeight="2dp"
+                    app:mrb_connectingLineWeight="4dp"
+                    app:mrb_pinMaxFont="15sp"
+                    app:mrb_pinMinFont="6sp"
+                    app:mrb_pinRadius="0dp"
+                    app:mrb_pinTextColor="@android:color/white"
+                    app:mrb_rangeBar="true"
+                    app:mrb_rangeBarPaddingBottom="30dp"
+                    app:mrb_rangeBar_rounded="true"
+                    app:mrb_selectorBoundarySize="2dp"
+                    app:mrb_selectorSize="10dp"
+                    app:mrb_temporaryPins="true"
+                    app:mrb_tickDefaultLabel="label"
+                    app:mrb_tickHeight="2dp"
+                    app:mrb_tickLabelSize="4sp" />
+
 
                 <Button
                     android:id="@+id/filters_apply"

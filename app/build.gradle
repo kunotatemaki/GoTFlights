@@ -147,4 +147,8 @@ dependencies {
     androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
     androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.4'
 
+    //range bar
+    implementation 'com.appyvet:materialrangebar:1.4.7'
+    implementation 'com.crystal:crystalrangeseekbar:1.0.0'
+
 }
