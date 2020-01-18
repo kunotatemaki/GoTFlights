@@ -146,4 +146,5 @@ dependencies {
     /* Dagger mock */
     androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
     androidTestImplementation 'com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.4'
+
 }

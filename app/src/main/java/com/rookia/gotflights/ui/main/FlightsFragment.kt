@@ -86,7 +86,7 @@ class FlightsFragment : BaseFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.filter_item -> {
+            R.id.action_filter -> {
                 binding.filtersContainer.visibility = View.VISIBLE
             }
         }

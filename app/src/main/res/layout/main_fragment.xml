@@ -30,20 +30,30 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/filters_container"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="200dp"
             android:layout_marginStart="@dimen/list_item_spacing"
             android:layout_marginEnd="@dimen/list_item_spacing"
             android:layout_marginBottom="@dimen/list_item_spacing"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.button.MaterialButton
+                <TextView
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="40sp"
+                    android:text="Cretino"/>
+
+                <Button
                     android:id="@+id/filters_apply"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

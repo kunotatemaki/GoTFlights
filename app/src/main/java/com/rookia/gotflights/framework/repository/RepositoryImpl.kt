@@ -40,7 +40,8 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun getFlightsFromNetwork(): Result<ApiResponse> =
         try {
-            val resp = networkServiceFactory.getFlightsServiceInstance().getFlights()
+            val api = networkServiceFactory.getFlightsServiceInstance()
+            val resp = api.getFlights()
             if (resp.isSuccessful && resp.body() != null) {
                 Result.success(resp.body())
             } else {
