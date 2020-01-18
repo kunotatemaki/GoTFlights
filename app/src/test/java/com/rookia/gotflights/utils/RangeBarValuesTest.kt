@@ -33,7 +33,7 @@ class RangeBarValuesTest {
 
     @Test
     fun `get interval `() {
-        assertEquals(2.toBigInteger(), RangeBarValues.getInterval(32.toBigInteger(), 5.toBigInteger()))
+        assertEquals(2.toBigInteger(), RangeBarValues.getInterval(142.toBigInteger(), 5.toBigInteger()))
     }
 
     @Test

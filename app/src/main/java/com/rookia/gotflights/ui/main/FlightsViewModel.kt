@@ -19,6 +19,9 @@ open class FlightsViewModel constructor(
     val flights: MediatorLiveData<Result<List<Flight>>> = MediatorLiveData()
     private var listOfFlights: List<Flight> = listOf()
 
+    private val filterShownMutable = MutableLiveData<Boolean>()
+    val filterShown: LiveData<Boolean> = filterShownMutable
+
     var maxPrice: BigDecimal? = null
         private set
     var minPrice: BigDecimal? = null
@@ -75,6 +78,14 @@ open class FlightsViewModel constructor(
         }
 
     fun canShowFilter(): Boolean = maxPrice != null && minPrice != null
+
+    fun showFilter(){
+        filterShownMutable.value = true
+    }
+
+    fun hideFilter(){
+        filterShownMutable.value = false
+    }
 
 
 }

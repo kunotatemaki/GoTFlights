@@ -108,6 +108,14 @@ class FlightsFragment : BaseFragment() {
                 }
             })
 
+        viewModel.filterShown.observe(viewLifecycleOwner, Observer {
+            if(it== true) {
+                binding.filtersContainer.visibility = View.VISIBLE
+            } else {
+                binding.filtersContainer.visibility = View.GONE
+            }
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -152,12 +160,12 @@ class FlightsFragment : BaseFragment() {
             binding.rangeBar.tickStart = min.toFloat()
             binding.rangeBar.tickEnd = max.toFloat()
             binding.rangeBar.setTickInterval(interval.toFloat())
-            binding.filtersContainer.visibility = View.VISIBLE
+            viewModel.showFilter()
         }
     }
 
     private fun applyFilters() {
-        binding.filtersContainer.visibility = View.GONE
+        viewModel.hideFilter()
         with(binding.rangeBar) {
             val minVal =
                 RangeBarValues.getPinValue(this.tickStart, this.tickInterval, this.leftIndex)

@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.*
 import testclasses.getFlight
+import java.math.BigDecimal
 
 
 @ObsoleteCoroutinesApi
@@ -116,7 +117,7 @@ class FlightsViewModelTest {
     fun `filter flights show loading and success states`() {
         runBlocking {
             val testObserver = viewModel.flights.test()
-            viewModel.filterFlights().join()
+            viewModel.filterFlights(0f, 1f).join()
             testObserver.assertHasValue()
                 .assertHistorySize(2)
                 .assertValueHistory(Result.loading(null), Result.success(listOf()))
