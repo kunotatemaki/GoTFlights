@@ -24,9 +24,6 @@ class GetFlightsUseCaseTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private val targetCurrencyName = "EUR"
-    private val targetCurrencySymbol = "€"
-
     private val flight1 = getFlight(
         "Valladolid",
         "Madrid",
@@ -122,9 +119,9 @@ class GetFlightsUseCaseTest {
     fun orderByPriceAndRemoveDuplicates() {
         val orderedList = getFlightsUseCase.orderByPriceAndRemoveDuplicates(flights)
         assertEquals(2, orderedList.size)
-        assertEquals(10.toBigDecimal(), orderedList.last().getConvertedPrice())
+        assertEquals(10.toBigDecimal(), orderedList.last().convertedPrice)
         assertEquals("Valladolid", orderedList.last().inbound?.origin)
-        assertEquals(1.toBigDecimal(), orderedList.first().getConvertedPrice())
+        assertEquals(1.toBigDecimal(), orderedList.first().convertedPrice)
         assertEquals("Zamora", orderedList.first().inbound?.origin)
     }
 
@@ -140,12 +137,12 @@ class GetFlightsUseCaseTest {
             )
             val list =
                 getFlightsUseCase.convertToSameCurrency(listOf(flightEUR, flightGBP, flightUSD))
-            assertEquals(10.toBigDecimal(), list.first().getConvertedPrice())
+            assertEquals(10.toBigDecimal(), list.first().convertedPrice)
             assertEquals("10,00EUR", list.first().getConvertedPriceFormatted())
-            assertEquals(15.0.toBigDecimal(), list[1].getConvertedPrice())
-            assertEquals("15,00EUR (10GBP)", list[1].getConvertedPriceFormatted())
-            assertEquals(8.0.toBigDecimal(), list.last().getConvertedPrice())
-            assertEquals("8,00EUR (10USD)", list.last().getConvertedPriceFormatted())
+            assertEquals(15.0.toBigDecimal(), list[1].convertedPrice)
+            assertEquals("15,00EUR (10,00GBP)", list[1].getConvertedPriceFormatted())
+            assertEquals(8.0.toBigDecimal(), list.last().convertedPrice)
+            assertEquals("8,00EUR (10,00USD)", list.last().getConvertedPriceFormatted())
         }
     }
 
@@ -162,8 +159,8 @@ class GetFlightsUseCaseTest {
             val list =
                 getFlightsUseCase.convertToSameCurrency(listOf(flightEUR, flightGBP, flightUSD))
             assertEquals(2, list.size)
-            assertEquals(10.toBigDecimal(), list.first().getConvertedPrice())
-            assertEquals(15.0.toBigDecimal(), list.last().getConvertedPrice())
+            assertEquals(10.toBigDecimal(), list.first().convertedPrice)
+            assertEquals(15.0.toBigDecimal(), list.last().convertedPrice)
         }
     }
 

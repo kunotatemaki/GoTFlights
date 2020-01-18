@@ -40,7 +40,7 @@ class GetFlightsUseCase constructor(private val repository: Repository) {
 
     fun orderByPriceAndRemoveDuplicates(list: List<Flight>?): List<Flight> =
         list?.sortedBy {
-            it.getConvertedPrice()
+            it.convertedPrice
         }?.distinctBy { "${it.inbound?.origin}${it.inbound?.destination}" } ?: listOf()
 
 }

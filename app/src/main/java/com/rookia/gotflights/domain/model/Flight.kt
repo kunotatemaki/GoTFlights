@@ -10,30 +10,29 @@ data class Flight(
     private val price: BigDecimal?,
     private val targetCurrencyName: String
 ) {
-    private var exchangeRate: BigDecimal? = 1.toBigDecimal()
+    private var exchangeRate: BigDecimal? = null
+    var convertedPrice: BigDecimal? = null
+    private set
 
-    fun getConvertedPrice(): BigDecimal? {
+    fun setExchangeRate(rate: BigDecimal?) {
+        convertedPrice = null
+        exchangeRate = rate
         if (price != null) {
             exchangeRate?.let {
-                return price * it
+                convertedPrice = price * it
             }
         }
-        return null
     }
 
     fun getConvertedPriceFormatted(): String {
-        getConvertedPrice()?.let {
+        convertedPrice?.let {
             var formattedText = "${formatDecimalValue(it)}$targetCurrencyName"
             if (currency != targetCurrencyName) {
-                formattedText += " ($price$currency)"
+                formattedText += " (${formatDecimalValue(price)}$currency)"
             }
             return formattedText
         }
         return ""
-    }
-
-    fun setExchangeRate(rate: BigDecimal?) {
-        exchangeRate = rate
     }
 
     fun needToConvert() = currency != targetCurrencyName
