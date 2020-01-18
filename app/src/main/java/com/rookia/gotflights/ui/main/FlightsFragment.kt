@@ -107,6 +107,7 @@ class FlightsFragment : BaseFragment() {
 
     private fun applyFilters(){
         binding.filtersContainer.visibility = View.GONE
+        viewModel.filterFlights()
     }
 
 }

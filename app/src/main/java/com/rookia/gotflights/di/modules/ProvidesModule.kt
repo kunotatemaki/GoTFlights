@@ -7,6 +7,7 @@ import com.rookia.gotflights.domain.model.FlightsCache
 import com.rookia.gotflights.framework.persistence.databases.AppDatabase
 import com.rookia.gotflights.ui.main.FlightsViewModel
 import com.rookia.gotflights.usecases.GetFlightsUseCase
+import com.rookia.gotflights.usecases.FilterUseCase
 import com.rookia.gotflights.utils.RateLimiter
 import dagger.Module
 import dagger.Provides
@@ -31,16 +32,21 @@ class ProvidesModule {
 
     @Provides
     fun provideMainViewModel(
-        getFlightsUseCase: GetFlightsUseCase
+        getFlightsUseCase: GetFlightsUseCase,
+        filterUseCase: FilterUseCase
     ): FlightsViewModel = FlightsViewModel(
-        getFlightsUseCase
+        getFlightsUseCase,
+        filterUseCase
     )
 
     @Provides
     @Singleton
-    fun providesGetProductsUseCase(repository: Repository): GetFlightsUseCase =
+    fun providesGetFlightsUseCase(repository: Repository): GetFlightsUseCase =
         GetFlightsUseCase(repository)
 
+    @Provides
+    @Singleton
+    fun providesFiltersUseCase(): FilterUseCase = FilterUseCase()
 
     @Provides
     @Singleton

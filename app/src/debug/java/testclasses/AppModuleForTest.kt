@@ -17,6 +17,7 @@ import com.rookia.gotflights.framework.resources.ResourcesManagerImpl
 import com.rookia.gotflights.framework.utils.security.EncryptionImpl
 import com.rookia.gotflights.framework.utils.view.ViewUtilsImpl
 import com.rookia.gotflights.ui.main.FlightsViewModel
+import com.rookia.gotflights.usecases.FilterUseCase
 import com.rookia.gotflights.usecases.GetFlightsUseCase
 import com.rookia.gotflights.utils.RateLimiter
 import com.rookia.gotflights.utils.ViewUtils
@@ -37,10 +38,13 @@ open class AppModuleForTest {
 
     @Provides
     open fun providesMainViewModel(
-        getFlightsUseCase: GetFlightsUseCase
+        getFlightsUseCase: GetFlightsUseCase,
+        filterUseCase: FilterUseCase
     ): FlightsViewModel =
         FlightsViewModel(
-            getFlightsUseCase
+            getFlightsUseCase,
+            filterUseCase
+
         )
 
     @Singleton
@@ -92,4 +96,8 @@ open class AppModuleForTest {
     @Provides
     @Singleton
     open fun providesFlightsCache() = FlightsCache()
+
+    @Provides
+    @Singleton
+    fun providesFiltersUseCase(): FilterUseCase = FilterUseCase()
 }

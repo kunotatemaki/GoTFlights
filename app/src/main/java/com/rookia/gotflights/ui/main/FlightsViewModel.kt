@@ -1,12 +1,10 @@
 package com.rookia.gotflights.ui.main
 
 import androidx.annotation.VisibleForTesting
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.vo.Result
+import com.rookia.gotflights.usecases.FilterUseCase
 import com.rookia.gotflights.usecases.GetFlightsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,63 +12,53 @@ import kotlinx.coroutines.withContext
 import java.math.BigDecimal
 
 open class FlightsViewModel constructor(
-    private val getFlightsUseCase: GetFlightsUseCase
+    private val getFlightsUseCase: GetFlightsUseCase,
+    private val filterUseCase: FilterUseCase
 ) : ViewModel() {
 
     val flights: MediatorLiveData<Result<List<Flight>>> = MediatorLiveData()
+    private var listOfFlights: List<Flight> = listOf()
 
     var maxPrice: BigDecimal? = null
-    private set
+        private set
     var minPrice: BigDecimal? = null
-    private set
+        private set
 
     @VisibleForTesting
     val fetchTrigger = MutableLiveData<Long>()
 
     init {
         flights.addSource(fetchTrigger) {
+            maxPrice = null
+            minPrice = null
             val flightsFromRepo = getFlightsUseCase.getFlights()
             flights.addSource(flightsFromRepo) {
                 flightsFromRepo.value?.let {
                     viewModelScope.launch {
-                        val remove = formatFlightsAndSendItToTheView(it)
-                        if(remove) flights.removeSource(flightsFromRepo)
+                        listOfFlights = formatFlights(it)
+                        if (it.status != Result.Status.LOADING) {
+                            flights.removeSource(flightsFromRepo)
+                        }
+                        flights.value = Result(it.status, listOfFlights, it.message)
                     }
                 }
             }
         }
+
         fetchTrigger.value = 0
     }
 
-    /**
-     * this function prepares the data to be shown on the screen
-     * @param data as it comes from the server -> a list of flights wrapped in the result class
-     * @return true if the source has to be removed from the mediator
-     */
     @VisibleForTesting
-    suspend fun formatFlightsAndSendItToTheView(result: Result<List<Flight>>): Boolean =
+    suspend fun formatFlights(result: Result<List<Flight>>): List<Flight> =
         withContext(Dispatchers.Default) {
             val sameCurrencyList = getFlightsUseCase.convertToSameCurrency(result.data)
-            val formattedList = getFlightsUseCase.orderByPriceAndRemoveDuplicates(sameCurrencyList)
-            storeMaxAndMinPrices(formattedList)
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    flights.postValue(Result.success(formattedList))
-                    true
-                }
-                Result.Status.ERROR -> {
-                    flights.postValue(Result.error(result.message, formattedList))
-                    true
-                }
-                Result.Status.LOADING -> {
-                    flights.postValue(Result.loading(formattedList))
-                    false
-                }
+            getFlightsUseCase.orderByPriceAndRemoveDuplicates(sameCurrencyList).also {
+                storeMaxAndMinPrices(it)
             }
         }
 
     @VisibleForTesting
-    fun storeMaxAndMinPrices(orderedList: List<Flight>){
+    fun storeMaxAndMinPrices(orderedList: List<Flight>) {
         minPrice = orderedList.firstOrNull()?.convertedPrice
         maxPrice = orderedList.lastOrNull()?.convertedPrice
     }
@@ -78,6 +66,14 @@ open class FlightsViewModel constructor(
     fun refresh() {
         fetchTrigger.value = System.currentTimeMillis()
     }
+
+    fun filterFlights() =
+        viewModelScope.launch {
+            flights.value = Result.loading(flights.value?.data)
+            val filteredList = filterUseCase.filterListOfFlights(listOfFlights, 100.toBigDecimal(), 200.toBigDecimal())
+            flights.value = Result.success(filteredList)
+        }
+
 
 
 }

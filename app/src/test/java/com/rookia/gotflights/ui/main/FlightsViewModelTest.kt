@@ -3,8 +3,11 @@ package com.rookia.gotflights.ui.main
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jraska.livedata.test
 import com.rookia.gotflights.domain.model.Flight
+import com.rookia.gotflights.domain.vo.Result
+import com.rookia.gotflights.usecases.FilterUseCase
 import com.rookia.gotflights.usecases.GetFlightsUseCase
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
@@ -24,6 +27,9 @@ class FlightsViewModelTest {
 
     @MockK
     private lateinit var getFlightsUseCase: GetFlightsUseCase
+
+    @MockK
+    private lateinit var filterUseCase: FilterUseCase
 
     private lateinit var viewModel: FlightsViewModel
 
@@ -48,8 +54,10 @@ class FlightsViewModelTest {
         MockKAnnotations.init(this, relaxed = true)
         Dispatchers.setMain(mainThreadSurrogate)
         viewModel = FlightsViewModel(
-            getFlightsUseCase
+            getFlightsUseCase,
+            filterUseCase
         )
+        coEvery { filterUseCase.filterListOfFlights(any(), any(), any()) } returns listOf()
     }
 
     @After
@@ -73,7 +81,7 @@ class FlightsViewModelTest {
     }
 
     @Test
-    fun `store max and min prices from an ordered list of more than 2 items`(){
+    fun `store max and min prices from an ordered list of more than 2 items`() {
         val orderedList = listOf(flight1, flight2, flight3)
         viewModel.storeMaxAndMinPrices(orderedList)
         Assert.assertEquals(1.toBigDecimal(), viewModel.minPrice)
@@ -81,7 +89,7 @@ class FlightsViewModelTest {
     }
 
     @Test
-    fun `store max and min prices from an ordered list of 2 items`(){
+    fun `store max and min prices from an ordered list of 2 items`() {
         val orderedList = listOf(flight1, flight2)
         viewModel.storeMaxAndMinPrices(orderedList)
         Assert.assertEquals(1.toBigDecimal(), viewModel.minPrice)
@@ -89,7 +97,7 @@ class FlightsViewModelTest {
     }
 
     @Test
-    fun `store max and min prices from an ordered list of 1 item`(){
+    fun `store max and min prices from an ordered list of 1 item`() {
         val orderedList = listOf(flight1)
         viewModel.storeMaxAndMinPrices(orderedList)
         Assert.assertEquals(1.toBigDecimal(), viewModel.minPrice)
@@ -97,11 +105,22 @@ class FlightsViewModelTest {
     }
 
     @Test
-    fun `store max and min prices from an ordered empty list`(){
+    fun `store max and min prices from an ordered empty list`() {
         val orderedList = listOf<Flight>()
         viewModel.storeMaxAndMinPrices(orderedList)
         Assert.assertNull(viewModel.minPrice)
         Assert.assertNull(viewModel.maxPrice)
+    }
+
+    @Test
+    fun `filter flights show loading and success states`() {
+        runBlocking {
+            val testObserver = viewModel.flights.test()
+            viewModel.filterFlights().join()
+            testObserver.assertHasValue()
+                .assertHistorySize(2)
+                .assertValueHistory(Result.loading(null), Result.success(listOf()))
+        }
     }
 
 }
