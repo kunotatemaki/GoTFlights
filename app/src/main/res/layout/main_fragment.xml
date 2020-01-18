@@ -86,7 +86,7 @@
                     app:mrb_pinRadius="0dp"
                     app:mrb_pinTextColor="@android:color/white"
                     app:mrb_rangeBar="true"
-                    app:mrb_rangeBarPaddingBottom="30dp"
+                    app:mrb_rangeBarPaddingBottom="16dp"
                     app:mrb_rangeBar_rounded="true"
                     app:mrb_selectorBoundarySize="2dp"
                     app:mrb_selectorSize="10dp"
