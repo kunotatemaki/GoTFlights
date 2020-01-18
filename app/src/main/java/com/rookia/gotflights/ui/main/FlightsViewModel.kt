@@ -11,12 +11,18 @@ import com.rookia.gotflights.usecases.GetFlightsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.math.BigDecimal
 
 open class FlightsViewModel constructor(
     private val getFlightsUseCase: GetFlightsUseCase
 ) : ViewModel() {
 
     val flights: MediatorLiveData<Result<List<Flight>>> = MediatorLiveData()
+
+    var maxPrice: BigDecimal? = null
+    private set
+    var minPrice: BigDecimal? = null
+    private set
 
     @VisibleForTesting
     val fetchTrigger = MutableLiveData<Long>()
@@ -46,6 +52,7 @@ open class FlightsViewModel constructor(
         withContext(Dispatchers.Default) {
             val sameCurrencyList = getFlightsUseCase.convertToSameCurrency(result.data)
             val formattedList = getFlightsUseCase.orderByPriceAndRemoveDuplicates(sameCurrencyList)
+            storeMaxAndMinPrices(formattedList)
             when (result.status) {
                 Result.Status.SUCCESS -> {
                     flights.postValue(Result.success(formattedList))
@@ -62,6 +69,11 @@ open class FlightsViewModel constructor(
             }
         }
 
+    @VisibleForTesting
+    fun storeMaxAndMinPrices(orderedList: List<Flight>){
+        minPrice = orderedList.firstOrNull()?.convertedPrice
+        maxPrice = orderedList.lastOrNull()?.convertedPrice
+    }
 
     fun refresh() {
         fetchTrigger.value = System.currentTimeMillis()

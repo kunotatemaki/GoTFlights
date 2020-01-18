@@ -14,19 +14,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/product_list"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_list"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="17"
+                tools:listitem="@layout/flight_row" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/filters_container"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/list_item_spacing"
+            android:layout_marginEnd="@dimen/list_item_spacing"
+            android:layout_marginBottom="@dimen/list_item_spacing"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="17"
-            tools:listitem="@layout/flight_row"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:visibility="gone">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/filters_apply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/list_item_spacing_half"
+                    android:layout_marginBottom="@dimen/list_item_spacing_half"
+                    android:text="@string/apply"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -8,5 +8,6 @@
     <string name="day">d</string>
     <string name="hour">h</string>
     <string name="minutes">min</string>
+    <string name="apply">Apply</string>
 </resources>
 <!--todo splash drawable...-->

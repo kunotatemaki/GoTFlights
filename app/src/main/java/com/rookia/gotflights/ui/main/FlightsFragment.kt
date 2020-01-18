@@ -47,6 +47,9 @@ class FlightsFragment : BaseFragment() {
         binding.loading.setOnRefreshListener {
             viewModel.refresh()
         }
+        binding.filtersApply.setOnClickListener {
+            applyFilters()
+        }
         return binding.root
     }
 
@@ -81,31 +84,11 @@ class FlightsFragment : BaseFragment() {
         inflater.inflate(R.menu.checkout_menu, menu)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        context?.let {
-//            setCount(it, viewModel.getNumberOfSelectedItems().toString(), menu)
-        }
-    }
-
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filter_item -> {
-//                if (viewModel.getNumberOfSelectedItems() > 0) {
-//                    showCheckoutScreen()
-//                } else {
-//                    activity?.let {
-//                        viewUtils.showAlertDialog(
-//                            activity = WeakReference(it),
-//                            allowCancelWhenTouchingOutside = false,
-//                            message = resourcesManager.getString(R.string.select_items),
-//                            positiveButton = resourcesManager.getString(R.string.accept)
-//                        )
-//                    }
-//                }
+                binding.filtersContainer.visibility = View.VISIBLE
             }
-
         }
         return super.onOptionsItemSelected(item)
     }
@@ -120,6 +103,10 @@ class FlightsFragment : BaseFragment() {
 
     private fun showError(message: String?) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun applyFilters(){
+        binding.filtersContainer.visibility = View.GONE
     }
 
 }
