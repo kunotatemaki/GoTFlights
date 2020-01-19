@@ -44,7 +44,7 @@ class FlightsFragment : BaseFragment() {
             bindingComponent
         )
         adapter = FlightsAdapter(bindingComponent, resourcesManager)
-        binding.productList.apply {
+        binding.flightsList.apply {
             adapter = this@FlightsFragment.adapter
             val itemDecor = DividerItemDecoration(context, VERTICAL)
             addItemDecoration(itemDecor)

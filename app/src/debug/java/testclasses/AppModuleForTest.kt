@@ -90,7 +90,7 @@ open class AppModuleForTest {
 
     @Provides
     @Singleton
-    open fun providesGetProductsUseCase(repository: Repository): GetFlightsUseCase =
+    open fun providesGetFlightsUseCase(repository: Repository): GetFlightsUseCase =
         GetFlightsUseCase(repository)
 
     @Provides

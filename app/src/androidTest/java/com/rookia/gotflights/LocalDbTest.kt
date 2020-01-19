@@ -74,7 +74,7 @@ class LocalDbTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun testMoreThanOneProduct() {
+    fun testMoreThanOneItem() {
         runBlocking {
             persistenceManager.storeFoo(
                 listOf(dbFoo1, dbFoo2, dbFoo3)
