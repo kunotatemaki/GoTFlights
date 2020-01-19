@@ -48,33 +48,28 @@ class FiltersInstrumentedTest {
     private val flight1 = getFlightFromNetwork(
         "Valladolid",
         "Madrid",
-        12.toBigDecimal()
+        12.toDouble()
     )
     private val flight2 = getFlightFromNetwork(
         "Zamora",
         "Sevilla",
-        1.toBigDecimal()
+        1.toDouble()
     )
     private val flight3 = getFlightFromNetwork(
         "Valladolid",
         "Madrid",
-        11.toBigDecimal()
+        11.toDouble()
     )
     private val flight4 = getFlightFromNetwork(
         "Zamora",
         "Sevilla",
-        10.toBigDecimal()
+        10.toDouble()
     )
     private val flight5 = getFlightFromNetwork(
         "Valladolid",
         "Madrid",
-        10.toBigDecimal()
+        10.toDouble()
     )
-
-    private val flightEUR = getFlightFromNetwork("Coruña", "Zaragoza", 10.toBigDecimal())
-    private val flightGBP = getFlightFromNetwork("Zamora", "Sevilla", 10.toBigDecimal())
-    private val flightUSD = getFlightFromNetwork("Valladolid", "Madrid", 10.toBigDecimal())
-
 
     @Before
     fun setUp() {
@@ -105,12 +100,11 @@ class FiltersInstrumentedTest {
             //mocks will be injected by dagger
 
             onView(withId(R.id.filters_container)).check(matches(CoreMatchers.not(isDisplayed())))
-            onView(withId(R.id.action_filter)).perform(click());
+            onView(withId(R.id.action_filter)).perform(click())
             onView(withId(R.id.filters_container)).check(matches(isDisplayed()))
             onView(withId(R.id.filters_apply)).perform(click())
             onView(withId(R.id.filters_container)).check(matches(CoreMatchers.not(isDisplayed())))
         }
     }
-
 
 }

@@ -1,7 +1,7 @@
 package com.rookia.gotflights.domain.model
 
 import androidx.lifecycle.MutableLiveData
-import com.rookia.gotflights.domain.model.mapper.ApiToCacheMapper
+import com.rookia.gotflights.domain.model.mapper.FlightsMapper
 import com.rookia.gotflights.domain.network.model.FlightApiResponse
 
 
@@ -18,7 +18,7 @@ class FlightsCache {
 
     @Synchronized
     fun saveListOfFlightsInCache(list: List<FlightApiResponse>, targetCurrencyName: String) {
-        listOfFlights.postValue(list.map { ApiToCacheMapper.map(it, targetCurrencyName) })
+        listOfFlights.postValue(list.map { FlightsMapper.map(it, targetCurrencyName) })
     }
 
 }

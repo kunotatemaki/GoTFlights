@@ -20,9 +20,9 @@ class LocalCacheTest {
 
     private var flightsCache: FlightsCache? = null
 
-    private val networkFlight1 = getFlightFromNetwork("Valladolid", "Zamora", 1.toBigDecimal())
-    private val networkFlight2 = getFlightFromNetwork("Valencia", "Madrid", 11.toBigDecimal())
-    private val networkFlight3 = getFlightFromNetwork("Barcelona", "Sevilla", 31.toBigDecimal())
+    private val networkFlight1 = getFlightFromNetwork("Valladolid", "Zamora", 1.toDouble())
+    private val networkFlight2 = getFlightFromNetwork("Valencia", "Madrid", 11.toDouble())
+    private val networkFlight3 = getFlightFromNetwork("Barcelona", "Sevilla", 31.toDouble())
 
     @Before
     @Throws(Exception::class)

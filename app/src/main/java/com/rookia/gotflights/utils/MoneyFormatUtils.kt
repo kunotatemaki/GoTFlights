@@ -1,11 +1,10 @@
 package com.rookia.gotflights.utils
 
-import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 
-fun formatDecimalValue(value: BigDecimal?, removeDecimalsIfZero: Boolean = false): String {
+fun formatDecimalValue(value: Double?, removeDecimalsIfZero: Boolean = false): String {
     value ?: return ""
     val df = if (removeDecimalsIfZero) {
         DecimalFormat("0.##")

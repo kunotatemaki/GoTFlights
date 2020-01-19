@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.jraska.livedata.test
 import com.rookia.gotflights.data.network.NetworkServiceFactory
+import com.rookia.gotflights.data.persistence.PersistenceManager
 import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.model.FlightsCache
 import com.rookia.gotflights.domain.network.GotFlightsApi
@@ -49,6 +50,9 @@ class RepositoryTest {
     @MockK(relaxed = true)
     lateinit var flightsCache: FlightsCache
 
+    @MockK(relaxed = true)
+    lateinit var persistenceManager: PersistenceManager
+
     @MockK
     lateinit var api: GotFlightsApi
 
@@ -57,12 +61,12 @@ class RepositoryTest {
 
     private lateinit var cacheResponse: List<Flight>
     private lateinit var networkResponse: ApiResponse
-    private val flight1 = getFlight("Valladolid", "Zamora", 1.0.toBigDecimal())
-    private val flight2 = getFlight("Burgos", "León", 2.0.toBigDecimal())
-    private val flight3 = getFlight("Oviedo", "Salamanca", 3.0.toBigDecimal())
-    private val nFlight1 = getFlightFromNetwork("Valladolid", "Zamora", 1.0.toBigDecimal())
-    private val nFlight2 = getFlightFromNetwork("Burgos", "León", 2.0.toBigDecimal())
-    private val nFlight3 = getFlightFromNetwork("Oviedo", "Salamanca", 3.0.toBigDecimal())
+    private val flight1 = getFlight("Valladolid", "Zamora", 1.0.toDouble())
+    private val flight2 = getFlight("Burgos", "León", 2.0.toDouble())
+    private val flight3 = getFlight("Oviedo", "Salamanca", 3.0.toDouble())
+    private val nFlight1 = getFlightFromNetwork("Valladolid", "Zamora", 1.0.toDouble())
+    private val nFlight2 = getFlightFromNetwork("Burgos", "León", 2.0.toDouble())
+    private val nFlight3 = getFlightFromNetwork("Oviedo", "Salamanca", 3.0.toDouble())
 
 
     @Before

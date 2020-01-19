@@ -1,25 +1,23 @@
 package com.rookia.gotflights.utils
 
-import java.math.BigDecimal
-import java.math.BigInteger
 import kotlin.math.roundToInt
 
 
 object RangeBarValues {
 
-    fun getLowerValue(min: BigDecimal): BigInteger {
-        val rounded = min.toBigInteger()
-        return rounded - (rounded % 10.toBigInteger())
+    fun getLowerValue(min: Double): Int {
+        val rounded = min.toInt()
+        return rounded - (rounded % 10)
     }
 
-    fun getHigherValue(max: BigDecimal): BigInteger {
-        val rounded = max.toBigInteger()
-        return rounded + (10.toBigInteger() - (rounded % 10.toBigInteger()))
+    fun getHigherValue(max: Double): Int {
+        val rounded = max.toInt()
+        return rounded + (10 - (rounded % 10))
     }
 
-    fun getInterval(max: BigInteger, min: BigInteger): BigInteger {
-        val interval: BigInteger = (max - min) / 50.toBigInteger()
-        return if (interval < 1.toBigInteger()) 1.toBigInteger() else interval
+    fun getInterval(max: Int, min: Int): Int {
+        val interval: Int = (max - min) / 50
+        return if (interval < 1) 1 else interval
     }
 
     fun getPinValue(startValue: Float, interval: Double, index: Int): Int =

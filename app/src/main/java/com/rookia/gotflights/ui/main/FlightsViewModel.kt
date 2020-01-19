@@ -9,7 +9,6 @@ import com.rookia.gotflights.usecases.GetFlightsUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
 
 open class FlightsViewModel constructor(
     private val getFlightsUseCase: GetFlightsUseCase,
@@ -22,9 +21,9 @@ open class FlightsViewModel constructor(
     private val filterShownMutable = MutableLiveData<Boolean>()
     val filterShown: LiveData<Boolean> = filterShownMutable
 
-    var maxPrice: BigDecimal? = null
+    var maxPrice: Double? = null
         private set
-    var minPrice: BigDecimal? = null
+    var minPrice: Double? = null
         private set
 
     @VisibleForTesting
@@ -73,7 +72,7 @@ open class FlightsViewModel constructor(
     fun filterFlights(minVal: Float, maxVal: Float) =
         viewModelScope.launch {
             flights.value = Result.loading(flights.value?.data)
-            val filteredList = filterUseCase.filterListOfFlights(listOfFlights, minVal.toBigDecimal(), maxVal.toBigDecimal())
+            val filteredList = filterUseCase.filterListOfFlights(listOfFlights, minVal.toDouble(), maxVal.toDouble())
             flights.value = Result.success(filteredList)
         }
 

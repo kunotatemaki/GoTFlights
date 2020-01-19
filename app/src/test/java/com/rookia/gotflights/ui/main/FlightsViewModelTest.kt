@@ -14,7 +14,6 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.*
 import testclasses.getFlight
-import java.math.BigDecimal
 
 
 @ObsoleteCoroutinesApi
@@ -37,18 +36,18 @@ class FlightsViewModelTest {
     private val flight1 = getFlight(
         "Valladolid",
         "Madrid",
-        1.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        1.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
     private val flight2 = getFlight(
         "Zamora",
         "Sevilla",
-        2.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        2.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
     private val flight3 = getFlight(
         "Valladolid",
         "Madrid",
-        3.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        3.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
 
     @Before
     fun setUp() {
@@ -85,24 +84,24 @@ class FlightsViewModelTest {
     fun `store max and min prices from an ordered list of more than 2 items`() {
         val orderedList = listOf(flight1, flight2, flight3)
         viewModel.storeMaxAndMinPrices(orderedList)
-        Assert.assertEquals(1.toBigDecimal(), viewModel.minPrice)
-        Assert.assertEquals(3.toBigDecimal(), viewModel.maxPrice)
+        Assert.assertEquals(1.toDouble(), viewModel.minPrice)
+        Assert.assertEquals(3.toDouble(), viewModel.maxPrice)
     }
 
     @Test
     fun `store max and min prices from an ordered list of 2 items`() {
         val orderedList = listOf(flight1, flight2)
         viewModel.storeMaxAndMinPrices(orderedList)
-        Assert.assertEquals(1.toBigDecimal(), viewModel.minPrice)
-        Assert.assertEquals(2.toBigDecimal(), viewModel.maxPrice)
+        Assert.assertEquals(1.toDouble(), viewModel.minPrice)
+        Assert.assertEquals(2.toDouble(), viewModel.maxPrice)
     }
 
     @Test
     fun `store max and min prices from an ordered list of 1 item`() {
         val orderedList = listOf(flight1)
         viewModel.storeMaxAndMinPrices(orderedList)
-        Assert.assertEquals(1.toBigDecimal(), viewModel.minPrice)
-        Assert.assertEquals(1.toBigDecimal(), viewModel.maxPrice)
+        Assert.assertEquals(1.toDouble(), viewModel.minPrice)
+        Assert.assertEquals(1.toDouble(), viewModel.maxPrice)
     }
 
     @Test

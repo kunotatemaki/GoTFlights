@@ -5,6 +5,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import com.rookia.gotflights.domain.vo.Result
 import kotlinx.coroutines.Dispatchers
+import timber.log.Timber
 
 
 fun <T, A> resultLiveData(
@@ -45,3 +46,26 @@ fun <T, A> resultLiveData(
         }
 
     }
+
+suspend fun <T, A> resultRefusingOutdatedInfo(
+    persistedDataQuery: suspend () -> T?,
+    networkCall: suspend () -> Result<A>,
+    persistCallResult: suspend (A?) -> Unit,
+    isThePersistedInfoOutdated: (T?) -> Boolean
+): T? {
+    val persistedData = persistedDataQuery.invoke()
+    Timber.d("rukia exchange ${isThePersistedInfoOutdated(persistedData)}")
+    return if (isThePersistedInfoOutdated(persistedData)) {
+        //network call and persist the result
+        Timber.d("rukia exchange descargo")
+        val responseFromNetwork = networkCall.invoke()
+        if (responseFromNetwork.status == Result.Status.SUCCESS) {
+            persistCallResult.invoke(responseFromNetwork.data)
+        }
+        persistedDataQuery.invoke()
+    } else {
+        Timber.d("rukia exchange base de datos")
+        persistedData
+    }
+
+}

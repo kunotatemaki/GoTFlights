@@ -1,11 +1,12 @@
 package com.rookia.gotflights.data.persistence
 
-import androidx.lifecycle.LiveData
-import com.rookia.gotflights.framework.persistence.entities.FooEntity
+import com.rookia.gotflights.domain.network.model.ExchangeRate
+import com.rookia.gotflights.framework.persistence.entities.ExchangeRateEntity
+import java.util.*
 
 interface PersistenceManager {
 
-    fun getFoo(): LiveData<List<FooEntity>>
-    suspend fun storeFoo(list: List<FooEntity>)
+    suspend fun getExchangeRate(from: String, to: String): ExchangeRateEntity?
+    suspend fun storeExchangeRate(originalCurrency: String, exchangeRate: ExchangeRate?, date: Date)
 
 }

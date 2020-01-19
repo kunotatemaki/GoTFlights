@@ -13,12 +13,21 @@ import java.util.*
 class DateUtilsTest {
 
     private val resourcesManager: ResourcesManager = mockk()
+    private lateinit var today: Date
+    private val now = Date()
 
     @Before
     fun setup(){
         every { resourcesManager.getString(R.string.day) } returns "d"
         every { resourcesManager.getString(R.string.hour) } returns "h"
         every { resourcesManager.getString(R.string.minutes) } returns "min"
+        today = Calendar.getInstance().apply {
+            time = now
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time
     }
 
     @Test
@@ -89,5 +98,10 @@ class DateUtilsTest {
         val date2 = DateUtils.parseStringDate("11/18/2275", "18:15")
         val elapsed = DateUtils.elapsedTime(date1!!, date2!!, resourcesManager)
         assertEquals("1h, 3min", elapsed)
+    }
+
+    @Test
+    fun testIsSame() {
+        assert(DateUtils.isSameDay(now, today))
     }
 }

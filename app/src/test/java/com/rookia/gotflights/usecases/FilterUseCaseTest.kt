@@ -12,28 +12,28 @@ class FilterUseCaseTest {
     private val flight1 = getFlight(
         "Valladolid",
         "Madrid",
-        12.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        12.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
     private val flight2 = getFlight(
         "Zamora",
         "Sevilla",
-        1.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        1.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
     private val flight3 = getFlight(
         "Valladolid",
         "Madrid",
-        11.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        11.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
     private val flight4 = getFlight(
         "Zamora",
         "Sevilla",
-        9.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        9.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
     private val flight5 = getFlight(
         "Valladolid",
         "Madrid",
-        10.toBigDecimal()
-    ).also { it.setExchangeRate(1.toBigDecimal()) }
+        10.toDouble()
+    ).also { it.setExchangeRate(1.toDouble()) }
 
     private val filterUseCase: FilterUseCase = FilterUseCase()
 
@@ -42,12 +42,12 @@ class FilterUseCaseTest {
         runBlocking {
             val filteredList = filterUseCase.filterListOfFlights(
                 listOf(flight1, flight2, flight3, flight4, flight5),
-                2.toBigDecimal(),
-                11.toBigDecimal()
+                2.toDouble(),
+                11.toDouble()
             ).sortedBy { it.convertedPrice }
             assertEquals(3, filteredList.size)
-            assertEquals(9.toBigDecimal(), filteredList.first().convertedPrice)
-            assertEquals(11.toBigDecimal(), filteredList.last().convertedPrice)
+            assertEquals(9.toDouble(), filteredList.first().convertedPrice)
+            assertEquals(11.toDouble(), filteredList.last().convertedPrice)
         }
     }
 
@@ -56,12 +56,12 @@ class FilterUseCaseTest {
         runBlocking {
             val filteredList = filterUseCase.filterListOfFlights(
                 listOf(flight1, flight2, flight3, flight4, flight5),
-                10.toBigDecimal(),
-                20.toBigDecimal()
+                10.toDouble(),
+                20.toDouble()
             ).sortedBy { it.convertedPrice }
             assertEquals(3, filteredList.size)
-            assertEquals(10.toBigDecimal(), filteredList.first().convertedPrice)
-            assertEquals(12.toBigDecimal(), filteredList.last().convertedPrice)
+            assertEquals(10.toDouble(), filteredList.first().convertedPrice)
+            assertEquals(12.toDouble(), filteredList.last().convertedPrice)
         }
     }
 
@@ -70,12 +70,12 @@ class FilterUseCaseTest {
         runBlocking {
             val filteredList = filterUseCase.filterListOfFlights(
                 listOf(flight1, flight2, flight3, flight4, flight5),
-                0.toBigDecimal(),
-                9.toBigDecimal()
+                0.toDouble(),
+                9.toDouble()
             ).sortedBy { it.convertedPrice }
             assertEquals(2, filteredList.size)
-            assertEquals(1.toBigDecimal(), filteredList.first().convertedPrice)
-            assertEquals(9.toBigDecimal(), filteredList.last().convertedPrice)
+            assertEquals(1.toDouble(), filteredList.first().convertedPrice)
+            assertEquals(9.toDouble(), filteredList.last().convertedPrice)
         }
     }
 
@@ -84,12 +84,12 @@ class FilterUseCaseTest {
         runBlocking {
             val filteredList = filterUseCase.filterListOfFlights(
                 listOf(flight1, flight2, flight3, flight4, flight5),
-                0.toBigDecimal(),
-                20.toBigDecimal()
+                0.toDouble(),
+                20.toDouble()
             ).sortedBy { it.convertedPrice }
             assertEquals(5, filteredList.size)
-            assertEquals(1.toBigDecimal(), filteredList.first().convertedPrice)
-            assertEquals(12.toBigDecimal(), filteredList.last().convertedPrice)
+            assertEquals(1.toDouble(), filteredList.first().convertedPrice)
+            assertEquals(12.toDouble(), filteredList.last().convertedPrice)
         }
     }
 
@@ -98,8 +98,8 @@ class FilterUseCaseTest {
         runBlocking {
             val filteredList = filterUseCase.filterListOfFlights(
                 listOf(),
-                2.toBigDecimal(),
-                11.toBigDecimal()
+                2.toDouble(),
+                11.toDouble()
             ).sortedBy { it.convertedPrice }
             assertTrue(filteredList.isEmpty())
         }

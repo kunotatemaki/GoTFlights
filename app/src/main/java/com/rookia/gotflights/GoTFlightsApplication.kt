@@ -24,8 +24,6 @@ class GoTFlightsApplication : DaggerApplication() {
         } else {
             Timber.plant(CrashReportingTree())
         }
-
-
     }
 
     /** A tree which logs important information for crash reporting. (Tiber) */
@@ -34,7 +32,6 @@ class GoTFlightsApplication : DaggerApplication() {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return
             }
-
         }
     }
 }

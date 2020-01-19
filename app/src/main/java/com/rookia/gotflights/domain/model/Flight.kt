@@ -1,20 +1,19 @@
 package com.rookia.gotflights.domain.model
 
 import com.rookia.gotflights.utils.formatDecimalValue
-import java.math.BigDecimal
 
 data class Flight(
     val currency: String?,
     val inbound: Inbound?,
     val outbound: Outbound?,
-    private val price: BigDecimal?,
+    private val price: Double?,
     private val targetCurrencyName: String
 ) {
-    private var exchangeRate: BigDecimal? = null
-    var convertedPrice: BigDecimal? = null
-    private set
+    private var exchangeRate: Double? = null
+    var convertedPrice: Double? = null
+        private set
 
-    fun setExchangeRate(rate: BigDecimal?) {
+    fun setExchangeRate(rate: Double?) {
         convertedPrice = null
         exchangeRate = rate
         if (price != null) {

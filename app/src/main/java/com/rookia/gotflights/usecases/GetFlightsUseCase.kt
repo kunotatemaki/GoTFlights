@@ -6,7 +6,6 @@ import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.vo.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.math.BigDecimal
 
 class GetFlightsUseCase constructor(private val repository: Repository) {
 
@@ -20,17 +19,17 @@ class GetFlightsUseCase constructor(private val repository: Repository) {
             val listOfCurrencies =
                 list?.filterNot { it.currency == targetCurrencyName }
                     ?.mapNotNull { it.currency }?.distinct()
-            val mapOfExchangeRates = mutableMapOf<String, BigDecimal?>()
+            val mapOfExchangeRates = mutableMapOf<String, Double?>()
             listOfCurrencies?.forEach { currency ->
                 val exchangeRate =
                     repository.getExchangeRate(from = currency, to = targetCurrencyName)
-                if (exchangeRate.status == Result.Status.SUCCESS) {
-                    mapOfExchangeRates[currency] = exchangeRate.data?.exchangeRate
+                if (exchangeRate != null) {
+                    mapOfExchangeRates[currency] = exchangeRate.value
                 }
             }
             list?.forEach { flight ->
                 if (flight.needToConvert().not()) {
-                    flight.setExchangeRate(1.toBigDecimal())
+                    flight.setExchangeRate(1.toDouble())
                 } else {
                     flight.setExchangeRate(mapOfExchangeRates[flight.currency])
                 }

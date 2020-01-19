@@ -6,18 +6,18 @@ import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.rookia.gotflights.data.persistence.PersistenceManager
+import com.rookia.gotflights.domain.network.model.ExchangeRate
 import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
 import com.rookia.gotflights.framework.persistence.databases.AppDatabase
-import com.rookia.gotflights.framework.persistence.entities.FooEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import testclasses.getItem
+import java.util.*
 
 @Suppress("BlockingMethodInNonBlockingContext")
 @RunWith(AndroidJUnit4::class)
@@ -26,13 +26,14 @@ class LocalDbTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-
+    private val gbp = "GBP"
+    private val usd = "USD"
+    private val eur = "EUR"
+    private val gbpToEur = 1.5
+    private val usdToEur = 0.8
+    private val date = Date()
     private lateinit var database: AppDatabase
     private lateinit var persistenceManager: PersistenceManager
-
-    private val dbFoo1 = FooEntity(1, "name1", 1.0)
-    private val dbFoo2 = FooEntity(2, "name2", 2.0)
-    private val dbFoo3 = FooEntity(3, "name3", 3.0)
 
     @Before
     @Throws(Exception::class)
@@ -43,7 +44,6 @@ class LocalDbTest {
             InstrumentationRegistry.getInstrumentation().context,
             AppDatabase::class.java
         ).allowMainThreadQueries().build() // allowing main thread queries, just for testing
-
         persistenceManager = PersistenceManagerImpl(database)
 
     }
@@ -56,32 +56,35 @@ class LocalDbTest {
 
     @Test
     @Throws(InterruptedException::class)
-    fun testFooTableEmpty() {
-        val foo = persistenceManager.getFoo()
-        assertTrue(foo.getItem().isEmpty())
-
-    }
-
-    @Test
-    @Throws(InterruptedException::class)
-    fun testOneFooItem() {
+    fun testTableEmpty() {
         runBlocking {
-            persistenceManager.storeFoo(listOf(dbFoo1))
-            val items = persistenceManager.getFoo().getItem()
-            assertEquals(1, items.size)
+            val rate = persistenceManager.getExchangeRate(from = gbp, to = eur)
+            assertNull(rate)
         }
     }
 
     @Test
     @Throws(InterruptedException::class)
-    fun testMoreThanOneItem() {
+    fun testGBP_and_noUSD() {
         runBlocking {
-            persistenceManager.storeFoo(
-                listOf(dbFoo1, dbFoo2, dbFoo3)
-            )
-            val items = persistenceManager.getFoo().getItem()
+            persistenceManager.storeExchangeRate(gbp, ExchangeRate(eur, gbpToEur), date)
+            val storedGBP = persistenceManager.getExchangeRate(gbp, eur)
+            assertEquals(gbp, storedGBP!!.from)
+            val storedUSD = persistenceManager.getExchangeRate(usd, eur)
+            assertNull(storedUSD)
+        }
+    }
 
-            assertEquals(3, items.size)
+    @Test
+    @Throws(InterruptedException::class)
+    fun testGBP_and_USD() {
+        runBlocking {
+            persistenceManager.storeExchangeRate(gbp, ExchangeRate(eur, gbpToEur), date)
+            persistenceManager.storeExchangeRate(usd, ExchangeRate(eur, usdToEur), date)
+            val storedGBP = persistenceManager.getExchangeRate(gbp, eur)
+            assertEquals(gbp, storedGBP!!.from)
+            val storedUSD = persistenceManager.getExchangeRate(usd, eur)
+            assertEquals(usd, storedUSD!!.from)
         }
     }
 

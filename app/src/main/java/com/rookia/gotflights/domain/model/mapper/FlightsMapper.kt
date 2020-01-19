@@ -5,7 +5,7 @@ import com.rookia.gotflights.domain.model.Inbound
 import com.rookia.gotflights.domain.model.Outbound
 import com.rookia.gotflights.domain.network.model.FlightApiResponse
 
-object ApiToCacheMapper {
+object FlightsMapper {
     fun map(type: FlightApiResponse, targetCurrencyName: String): Flight =
         Flight(
             currency = type.currency,
