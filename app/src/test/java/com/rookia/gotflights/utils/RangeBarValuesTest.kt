@@ -40,4 +40,9 @@ class RangeBarValuesTest {
     fun `get interval (result less that 1)`() {
         assertEquals(1.toBigInteger(), RangeBarValues.getInterval(7.toBigInteger(), 5.toBigInteger()))
     }
+
+    @Test
+    fun `get pin Value`() {
+        assertEquals(27, RangeBarValues.getPinValue(7f, 5.0, 4))
+    }
 }
