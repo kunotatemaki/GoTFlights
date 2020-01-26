@@ -4,6 +4,7 @@ import android.content.Context
 import com.rookia.gotflights.GoTFlightsApplication
 import com.rookia.gotflights.data.repository.Repository
 import com.rookia.gotflights.domain.model.FlightsCache
+import com.rookia.gotflights.framework.network.NetworkServiceFactory
 import com.rookia.gotflights.framework.persistence.databases.AppDatabase
 import com.rookia.gotflights.ui.main.FlightsViewModel
 import com.rookia.gotflights.usecases.GetFlightsUseCase
@@ -51,5 +52,9 @@ class ProvidesModule {
     @Provides
     @Singleton
     fun providesFlightsCache() = FlightsCache()
+
+    @Singleton
+    @Provides
+    fun provideNetworkServiceFactory(): NetworkServiceFactory = NetworkServiceFactory()
 
 }

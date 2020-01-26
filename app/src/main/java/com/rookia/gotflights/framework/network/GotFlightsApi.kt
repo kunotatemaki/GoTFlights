@@ -1,4 +1,4 @@
-package com.rookia.gotflights.domain.network
+package com.rookia.gotflights.framework.network
 
 import com.rookia.gotflights.domain.network.model.ApiResponse
 import retrofit2.Response

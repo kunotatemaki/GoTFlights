@@ -4,13 +4,13 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.jraska.livedata.test
-import com.rookia.gotflights.data.network.NetworkServiceFactory
 import com.rookia.gotflights.data.persistence.PersistenceManager
 import com.rookia.gotflights.domain.model.Flight
 import com.rookia.gotflights.domain.model.FlightsCache
-import com.rookia.gotflights.domain.network.GotFlightsApi
 import com.rookia.gotflights.domain.network.model.ApiResponse
 import com.rookia.gotflights.domain.vo.Result
+import com.rookia.gotflights.framework.network.GotFlightsApi
+import com.rookia.gotflights.framework.network.NetworkServiceFactory
 import com.rookia.gotflights.framework.repository.RepositoryImpl
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

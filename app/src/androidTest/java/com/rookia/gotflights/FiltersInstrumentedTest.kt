@@ -8,10 +8,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.nhaarman.mockitokotlin2.whenever
-import com.rookia.gotflights.data.network.NetworkServiceFactory
-import com.rookia.gotflights.domain.network.GotExchangeRatesApi
-import com.rookia.gotflights.domain.network.GotFlightsApi
 import com.rookia.gotflights.domain.network.model.ApiResponse
+import com.rookia.gotflights.framework.network.GotExchangeRatesApi
+import com.rookia.gotflights.framework.network.GotFlightsApi
+import com.rookia.gotflights.framework.network.NetworkServiceFactory
 import com.rookia.gotflights.ui.MainActivity
 import com.rookia.gotflights.ui.main.FlightsFragment
 import kotlinx.coroutines.runBlocking

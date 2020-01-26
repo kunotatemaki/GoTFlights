@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 
+@Suppress("UNCHECKED_CAST")
 @Throws(InterruptedException::class)
 fun <T> LiveData<T>.getItem(): T {
     val data = arrayOfNulls<Any>(1)

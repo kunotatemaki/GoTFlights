@@ -2,8 +2,6 @@ package com.rookia.gotflights.di.modules
 
 import com.rookia.gotflights.framework.utils.security.EncryptionImpl
 import com.rookia.gotflights.framework.utils.view.ViewUtilsImpl
-import com.rookia.gotflights.data.network.NetworkServiceFactory
-import com.rookia.gotflights.framework.network.NetworkServiceFactoryImpl
 import com.rookia.gotflights.data.persistence.PersistenceManager
 import com.rookia.gotflights.framework.persistence.PersistenceManagerImpl
 import com.rookia.gotflights.data.preferences.PreferencesManager
@@ -24,22 +22,19 @@ abstract class BindsModule {
 
 
     @Binds
-    abstract fun provideResourcesManager(resourcesManagerImpl: ResourcesManagerImpl): ResourcesManager
+    abstract fun providesResourcesManager(resourcesManagerImpl: ResourcesManagerImpl): ResourcesManager
 
     @Binds
-    abstract fun providePersistenceManager(persistenceManagerImpl: PersistenceManagerImpl): PersistenceManager
+    abstract fun providesPersistenceManager(persistenceManagerImpl: PersistenceManagerImpl): PersistenceManager
 
     @Binds
-    abstract fun provideNetworkServiceFactory(networkServiceFactoryImp: NetworkServiceFactoryImpl): NetworkServiceFactory
+    abstract fun providesEncryption(encryptionImpl: EncryptionImpl): Encryption
 
     @Binds
-    abstract fun provideEncryption(encryptionImpl: EncryptionImpl): Encryption
+    abstract fun providesPreferencesManager(preferencesManagerImpl: PreferencesManagerImpl): PreferencesManager
 
     @Binds
-    abstract fun providePreferencesManager(preferencesManagerImpl: PreferencesManagerImpl): PreferencesManager
-
-    @Binds
-    abstract fun provideRepository(repositoryImpl: RepositoryImpl): Repository
+    abstract fun providesRepository(repositoryImpl: RepositoryImpl): Repository
 
     @Binds
     @Singleton

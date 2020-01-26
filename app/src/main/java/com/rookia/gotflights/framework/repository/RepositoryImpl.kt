@@ -2,7 +2,6 @@ package com.rookia.gotflights.framework.repository
 
 
 import androidx.lifecycle.LiveData
-import com.rookia.gotflights.data.network.NetworkServiceFactory
 import com.rookia.gotflights.data.persistence.PersistenceManager
 import com.rookia.gotflights.data.repository.Repository
 import com.rookia.gotflights.domain.model.Flight
@@ -11,6 +10,7 @@ import com.rookia.gotflights.domain.network.model.ApiResponse
 import com.rookia.gotflights.domain.network.model.ExchangeRate
 import com.rookia.gotflights.domain.network.model.FlightApiResponse
 import com.rookia.gotflights.domain.vo.Result
+import com.rookia.gotflights.framework.network.NetworkServiceFactory
 import com.rookia.gotflights.framework.persistence.entities.ExchangeRateEntity
 import com.rookia.gotflights.utils.DateUtils
 import java.util.*
